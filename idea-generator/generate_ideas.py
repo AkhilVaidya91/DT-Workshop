@@ -11,12 +11,12 @@ from google import genai
 from google.genai import types
 
 
-TARGET_COUNT = 100
-BATCH_SIZE = 25
-MAX_BATCHES = 60          # safety cap so a bad run cannot loop forever
+TARGET_COUNT = 400
+BATCH_SIZE = 40
+MAX_BATCHES = 20          # safety cap so a bad run cannot loop forever
 MAX_RETRIES = 3
 TIMEOUT_MS = 120_000      # 2 minutes per request
-MODEL = "gemini-2.5-flash-lite"
+MODEL = "gemini-4-hydrogen"
 
 BASE_DIR = Path(__file__).parent
 OUTPUT_FILE = BASE_DIR / "ideas.csv"
