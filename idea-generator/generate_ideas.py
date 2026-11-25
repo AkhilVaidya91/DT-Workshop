@@ -11,8 +11,8 @@ from google import genai
 from google.genai import types
 
 
-TARGET_COUNT = 400
-BATCH_SIZE = 40
+TARGET_COUNT = 500
+BATCH_SIZE = 50
 MAX_BATCHES = 20          # safety cap so a bad run cannot loop forever
 MAX_RETRIES = 3
 TIMEOUT_MS = 120_000      # 2 minutes per request
@@ -25,16 +25,21 @@ RAW_LOG_FILE = BASE_DIR / "gemini_responses.jsonl"
 KEY_FILES = [BASE_DIR / ".env", BASE_DIR / ".env.example"]
 
 FOCUS_AREAS = [
-    "campus navigation and finding buildings or rooms",
-    "transportation, parking, and getting around Raleigh",
-    "dining, meal plans, and food access",
-    "academic life, studying, and course logistics",
-    "social connections and making friends",
-    "time management and daily routines",
-    "student resources, advising, and campus services",
-    "everyday inconveniences in dorms, laundry, and weather",
-    "budgeting, money, and textbooks",
-    "health, sleep, and wellbeing habits",
+    "social platforms and niche online communities",
+    "identity, payments, digital wallets, and unified access",
+    "marketplaces and platforms connecting people or businesses",
+    "personal productivity, organization, and life management",
+    "AI-powered software products that solve specific problems",
+    "health, fitness, mental wellness, and lifestyle products",
+    "education, learning, and skill development platforms",
+    "travel, local discovery, and location-based services",
+    "creators, content, entertainment, and digital experiences",
+    "personal finance, budgeting, and financial management",
+    "communication, collaboration, and relationship management",
+    "software products for underserved or overlooked user groups",
+    "automation tools for individuals, teams, and small businesses",
+    "digital identity, privacy, security, and personal data management",
+    "new applications of software that could replace outdated everyday systems",
 ]
 
 
@@ -93,21 +98,60 @@ def is_duplicate(title: str, seen_titles: list[str]) -> bool:
 def build_prompt(existing_titles: list[str], focus: str) -> str:
     avoid = "\n".join(f"- {t}" for t in existing_titles) or "(none yet)"
     return f"""
-Generate exactly {BATCH_SIZE} distinct, practical ideas for simple improvements to
-challenges faced by a first-semester NC State freshman in daily life.
+Generate exactly {BATCH_SIZE} distinct software product ideas.
+
 For this batch, concentrate on: {focus}.
-Ideas may be non-technical. Avoid generic suggestions, repetition, and variations of
-the same idea.
+
+IMPORTANT: Generate actual software product concepts, not small features,
+minor improvements, generic app suggestions, or solutions to isolated inconveniences.
+
+A product should be something that could realistically exist as a standalone
+mobile app, web application, platform, SaaS product, or software ecosystem.
+Think of ideas with the potential to become real products used by a defined
+group of people.
+
+Examples of the desired level of ambition and originality include:
+- A social network designed specifically for pets and their owners.
+- A universal digital wallet that connects multiple payment, access, loyalty,
+  and identification cards to a single physical card.
+- A marketplace that connects people with a specific type of resource or service.
+- A platform that helps people manage and control their personal data across services.
+
+These examples are only meant to illustrate the type of product concept expected.
+Do not generate variations of these examples.
+
+Prioritize ideas that:
+- Address a recognizable problem or unmet need.
+- Have a clearly identifiable target audience.
+- Offer a compelling core value proposition.
+- Have a distinct product concept beyond a collection of existing features.
+- Could plausibly attract regular users or paying customers.
+- Explore interesting combinations of existing technologies or entirely new
+  ways of delivering a service.
+
+Avoid:
+- Generic ideas such as "an AI assistant for everything."
+- Basic to-do lists, note-taking apps, weather apps, or expense trackers
+  without a genuinely differentiated concept.
+- Features that would only make sense as part of an existing product.
+- Ideas that are simply clones of popular applications.
+- Reworded versions or minor variations of existing ideas.
+
+Generate ideas across different target audiences, industries, and use cases.
+Do not restrict ideas to students, universities, or campus life.
 
 Do not repeat or closely vary any of these existing ideas:
 {avoid}
 
 Return only a JSON object with an "ideas" array containing exactly {BATCH_SIZE} objects.
 Each object must have:
-- "title": a short, clear, one-sentence title
-- "description": exactly three sentences: the first explains the idea, the second
-  explains the problem it addresses, and the third explains how it could help.
-  Avoid abbreviations with periods such as "e.g." or "i.e." inside descriptions.
+- "title": a short, clear title describing the product concept.
+- "description": exactly three sentences:
+  1. Explain what the product is and what it does.
+  2. Identify the target users and the problem or unmet need it addresses.
+  3. Explain its core functionality and why users would find it valuable.
+
+Avoid abbreviations with periods such as "e.g." or "i.e." inside descriptions.
 """
 
 

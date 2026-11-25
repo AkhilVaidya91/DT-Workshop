@@ -43,7 +43,7 @@ button,input,textarea,select{font:inherit;color:inherit}
 .progress>span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
 .progress-label{font-size:12px;color:var(--muted);margin-top:6px}
 .tabs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
-.tab{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:9px;cursor:pointer;color:var(--fg)}
+.tab{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:9px;cursor:pointer;color:var(--fg);transition:opacity .2s}
 .tab:hover{background:var(--panel-2)}
 .tab[aria-selected="true"]{background:var(--accent-soft)}
 .tab .num{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;border:1.5px solid var(--line);color:var(--muted)}
@@ -52,6 +52,12 @@ button,input,textarea,select{font:inherit;color:inherit}
 .tab .lbl{display:flex;flex-direction:column;min-width:0}
 .tab .lbl b{font-size:13.5px;font-weight:600}
 .tab .lbl small{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab.off{opacity:.42}
+.tab.off:hover{opacity:.7}
+.tab.off[aria-selected="true"]{opacity:.75}
+.tab.off .num{border-style:dashed;background:transparent;color:var(--muted);border-color:var(--muted)}
+.tab.off .lbl b{font-weight:500}
+.tab.off .lbl small{font-style:italic}
 .side-foot{margin-top:auto;display:flex;flex-direction:column;gap:6px}
 .side-foot .row{display:flex;gap:6px}
 .side-foot .btn{flex:1;justify-content:center}
@@ -63,9 +69,13 @@ main{padding:28px clamp(16px,4vw,48px) 80px;max-width:980px;width:100%}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
 .stage>header h2{font-size:26px;margin-top:4px}
 .stage>header .lead{color:var(--muted);font-size:15.5px;max-width:70ch}
+.stage.off>:not(header):not(.nav){opacity:.45;filter:grayscale(.7)}
+.stage.off>header .eyebrow{color:var(--muted)}
+.off-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--panel-2);border:1px dashed var(--muted);border-radius:10px;padding:10px 14px;margin:6px 0 0;font-size:13.5px}
+.flow-ctl:empty{display:none}
 
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:18px 0;box-shadow:var(--shadow)}
-.card>h3{font-size:16px;display:flex;align-items:center;gap:10px}
+.card>h3{font-size:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .step{flex:none;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--panel-2);color:var(--muted);padding:3px 8px;border-radius:99px}
 .hint{color:var(--muted);font-size:13.5px}
 
@@ -76,8 +86,8 @@ details.think li{margin:3px 0}
 
 label.f{display:block;font-weight:600;font-size:13.5px;margin:14px 0 6px}
 label.f .opt{font-weight:400;color:var(--muted)}
-input[type=text],textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none;transition:border-color .15s, box-shadow .15s}
-input[type=text]:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+input[type=text],textarea,select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none;transition:border-color .15s, box-shadow .15s}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 textarea{resize:vertical;min-height:90px}
 textarea.big{min-height:260px;font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;font-size:13px}
 .meta{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-top:4px;flex-wrap:wrap}
@@ -99,11 +109,22 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
 .warn ul{margin:4px 0 0;padding-left:20px}
 .okbox{background:var(--ok-soft);color:var(--ok);border-radius:10px;padding:10px 14px;font-size:13.5px}
 
-/* users */
-.user-row{display:grid;grid-template-columns:28px minmax(0,1fr) minmax(0,2fr) auto;gap:8px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}
-.user-row:last-child{border-bottom:0}
-.user-row .idx{width:28px;height:28px;border-radius:50%;background:var(--panel-2);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--muted);margin-top:6px}
-.user-row textarea{min-height:44px}
+/* section picker */
+.pick-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-top:12px}
+.pick-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:var(--bg);transition:border-color .15s, background .15s, opacity .15s}
+.pick-item:hover{border-color:var(--muted)}
+.pick-item input{margin:3px 0 0;accent-color:var(--accent);flex:none;width:16px;height:16px}
+.pick-item b{display:block;font-size:13.5px}
+.pick-item small{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:2px}
+.pick-item.on{border-color:var(--accent);background:var(--accent-soft)}
+.pick-item:not(.on){opacity:.65}
+.pick-item.locked{cursor:default}
+
+/* repeatable rows (audience, costs, collaborators) */
+.row-item{display:grid;grid-template-columns:28px minmax(0,1fr) minmax(0,2fr) auto;gap:8px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}
+.row-item:last-child{border-bottom:0}
+.row-item .idx{width:28px;height:28px;border-radius:50%;background:var(--panel-2);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--muted);margin-top:6px}
+.row-item textarea{min-height:44px}
 .icon-btn{border:0;background:transparent;cursor:pointer;color:var(--muted);padding:8px;border-radius:8px;font-size:18px;line-height:1}
 .icon-btn:hover{background:var(--panel-2);color:var(--accent)}
 
@@ -128,8 +149,9 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
 .summary-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;background:var(--panel-2);font-size:13.5px}
 .summary-item .dot{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
 .summary-item.ok .dot{background:var(--ok)}
+.skipped-note{font-size:12.5px;color:var(--muted);margin-top:10px}
 
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.2s}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;max-width:min(560px,90vw);text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
@@ -147,8 +169,8 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
 }
 .mobile-tools{display:none;gap:8px;flex-wrap:wrap;margin-top:24px}
 @media (max-width:620px){
-  .user-row{grid-template-columns:28px minmax(0,1fr) auto}
-  .user-row textarea{grid-column:2 / 3}
+  .row-item{grid-template-columns:28px minmax(0,1fr) auto}
+  .row-item textarea{grid-column:2 / 3}
   .grid2{grid-template-columns:1fr}
   .stage>header h2{font-size:22px}
 }
@@ -165,7 +187,7 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
     </div>
     <div>
       <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-      <div class="progress-label" id="progressLabel">0 of 8 stages complete</div>
+      <div class="progress-label" id="progressLabel"></div>
     </div>
     <ul class="tabs" role="tablist" id="tabs"></ul>
     <div class="side-foot">
@@ -181,92 +203,119 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
   <main id="main">
 
     <!-- ================= STAGE 0: IDEA ================= -->
-    <section class="stage" data-stage="0">
+    <section class="stage" data-stage="idea">
       <header>
         <div class="eyebrow">Stage 0 · Start here</div>
         <h2>Your idea</h2>
-        <p class="lead">Write the idea in your own words before you ask any AI. A rough idea is fine. The rest of this tool will help you sharpen it.</p>
+        <p class="lead">Write the idea in your own words before you ask any AI. A rough idea is fine. It can be an app, a device, an artwork, an event, a research paper, a service, or anything else you want to create. The rest of this tool will help you sharpen it.</p>
       </header>
 
       <details class="think" open>
         <summary>Think first (no AI yet)</summary>
         <ul>
-          <li>Who has the problem, and when in their day does it happen?</li>
+          <li>Who has the problem or need, and when does it show up for them?</li>
           <li>What do they do about it today? Why is that not good enough?</li>
-          <li>If your product worked, what would be different for them? How would you know?</li>
+          <li>If your project worked, what would be different for them? How would you know?</li>
         </ul>
       </details>
 
       <div class="card">
         <h3><span class="step">Your input</span> Describe the idea</h3>
         <label class="f" for="ideaTitle">Working name</label>
-        <input type="text" id="ideaTitle" data-key="idea.title" placeholder="e.g. PackPlanner">
+        <input type="text" id="ideaTitle" data-key="idea.title" placeholder="e.g. PackPlanner, Night Market Fest, Tidewater Mural, Campus Heat Study">
         <label class="f" for="ideaSummary">The idea in one sentence</label>
-        <input type="text" id="ideaSummary" data-key="idea.summary" placeholder="e.g. A planner that helps first-semester students balance classes, work shifts and campus events in one weekly view.">
+        <input type="text" id="ideaSummary" data-key="idea.summary" placeholder="e.g. A planner that helps first-year students balance classes, work shifts and campus events in one weekly view.">
         <label class="f" for="ideaDesc">A short description <span class="opt">(2–4 sentences)</span></label>
-        <textarea id="ideaDesc" data-key="idea.description" placeholder="What problem does it solve? For whom? What would it roughly do?"></textarea>
+        <textarea id="ideaDesc" data-key="idea.description" placeholder="What problem or need does it address? For whom? What would it roughly be or do?"></textarea>
         <div class="meta"><span></span><span data-count="idea.description"></span></div>
       </div>
 
-      <div class="nav"><span></span><button class="btn primary" data-go="1">Next: Users →</button></div>
+      <div class="card">
+        <h3><span class="step">Your input</span> Choose the sections that apply to your project</h3>
+        <p class="hint">Pick only what is useful for <em>your</em> project. Sections you skip stay visible in the sidebar, faded. They don't count toward progress or warnings, and they aren't included in the final document. You can change this at any time.</p>
+        <div class="grid2">
+          <div>
+            <label class="f" for="pType">What kind of project is it?</label>
+            <select id="pType" data-key="projectType">
+              <option value="">Choose a type…</option>
+              <option value="software">Software / app / website</option>
+              <option value="hardware">Hardware / physical product</option>
+              <option value="art">Art / creative work</option>
+              <option value="event">Event</option>
+              <option value="academic">Academic paper / research</option>
+              <option value="service">Service / programme</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div id="typeOtherWrap">
+            <label class="f" for="pTypeOther">Describe the type</label>
+            <input type="text" id="pTypeOther" data-key="projectTypeOther" placeholder="e.g. a board game, a podcast series, a policy proposal">
+          </div>
+        </div>
+        <div class="pick-list" id="pickList"></div>
+      </div>
+
+      <div class="nav" data-nav="idea"></div>
     </section>
 
-    <!-- ================= STAGE 1: USERS ================= -->
-    <section class="stage" data-stage="1">
+    <!-- ================= STAGE 1: AUDIENCE ================= -->
+    <section class="stage" data-stage="audience">
       <header>
-        <div class="eyebrow">Stage 1 · User perspective</div>
-        <h2>Who are the real users?</h2>
-        <p class="lead">List at least three types of people who would use or be affected by your product. Be specific: “a commuting freshman who works 15 hours a week” is better than “students”.</p>
+        <div class="eyebrow">Stage 1 · Audience perspective</div>
+        <h2>Who is it really for?</h2>
+        <p class="lead">List at least three groups of people who will use, attend, read, buy, run or be affected by what you are making. Be specific: “a commuting first-year student who works 15 hours a week” is better than “students”.</p>
+        <div class="flow-ctl" data-flow="audience"></div>
       </header>
 
       <details class="think" open>
         <summary>Think first</summary>
         <ul>
-          <li>Who uses the product directly? Who sets it up, pays for it or supports it?</li>
-          <li>Who is affected by it even if they never open it (advisors, staff, parents)?</li>
-          <li>How are these users different in goals, time, skill or access?</li>
+          <li>Who experiences it directly (uses, attends, reads, views)? Who sets it up, pays for it, reviews it or supports it?</li>
+          <li>Who is affected even if they never touch it (neighbours, staff, parents, reviewers, funders)?</li>
+          <li>How are these groups different in goals, time, skill or access?</li>
         </ul>
       </details>
 
       <div class="card">
-        <h3><span class="step">Step 1 · Your input</span> Define your users</h3>
-        <p class="hint">Minimum 3. Add as many as you need.</p>
+        <h3><span class="step">Step 1 · Your input</span> Define your audience</h3>
+        <p class="hint">Minimum 3 groups. Add as many as you need.</p>
         <div id="userList"></div>
-        <div class="btns"><button class="btn" id="addUser">+ Add another user</button></div>
+        <div class="btns"><button class="btn" data-add="users">+ Add another group</button></div>
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 2 · Copy</span> User-story prompt</h3>
+        <h3><span class="step">Step 2 · Copy</span> Audience-story prompt</h3>
         <p class="hint">Copy this prompt into your LLM. It updates as you type.</p>
-        <div class="missing" data-missing="1"></div>
+        <div class="missing" data-missing="audience"></div>
         <div class="prompt-wrap"><pre class="prompt" data-prompt="p1"></pre></div>
         <div class="btns"><button class="btn primary" data-copy="p1">Copy prompt</button></div>
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 3 · Paste</span> User stories from the LLM</h3>
-        <p class="hint">Read the answer before you paste it. Delete anything that is not true to your users.</p>
-        <textarea class="big" data-key="stories" placeholder="Paste the user stories (Markdown) here…"></textarea>
-        <div class="meta"><span>Check: does every user you listed have a section? Are assumptions marked?</span><span data-count="stories"></span></div>
+        <h3><span class="step">Step 3 · Paste</span> Audience stories from the LLM</h3>
+        <p class="hint">Read the answer before you paste it. Delete anything that isn't true to your audience.</p>
+        <textarea class="big" data-key="stories" placeholder="Paste the audience stories (Markdown) here…"></textarea>
+        <div class="meta"><span>Check: does every group you listed have a section? Are assumptions marked?</span><span data-count="stories"></span></div>
       </div>
 
-      <div class="nav"><button class="btn" data-go="0">← Idea</button><button class="btn primary" data-go="2">Next: Market research →</button></div>
+      <div class="nav" data-nav="audience"></div>
     </section>
 
-    <!-- ================= STAGE 2: MARKET ================= -->
-    <section class="stage" data-stage="2">
+    <!-- ================= STAGE 2: BACKGROUND ================= -->
+    <section class="stage" data-stage="background">
       <header>
-        <div class="eyebrow">Stage 2 · Market research</div>
-        <h2>Who already does something similar?</h2>
-        <p class="lead">Before you build, find out what exists. This prompt asks the LLM to find 5 to 10 companies with similar products, their core features, and what makes each one different.</p>
+        <div class="eyebrow">Stage 2 · Background research</div>
+        <h2>What already exists?</h2>
+        <p class="lead">Before you build, find out what exists. Depending on your project, that could be products and companies, similar events, related artworks and artists, or prior research. This prompt asks the LLM to find 5 to 10 of them, what each one offers, and what makes each one different.</p>
+        <div class="flow-ctl" data-flow="background"></div>
       </header>
 
       <details class="think" open>
         <summary>Think first</summary>
         <ul>
-          <li>What do your users use today, even if it is not an app (a spreadsheet, a group chat, an office)?</li>
-          <li>Which products do you already know? Write them below so the LLM includes them.</li>
-          <li>Where will your product be used (campus, country, region)?</li>
+          <li>What does your audience use or do today, even if it isn't a product (a spreadsheet, a group chat, an office, a yearly fair)?</li>
+          <li>Which examples do you already know? List them below so the LLM includes them.</li>
+          <li>Where will your project happen or be used (campus, city, country, field of study)?</li>
         </ul>
       </details>
 
@@ -274,79 +323,81 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
         <h3><span class="step">Step 1 · Your input</span> Optional focus</h3>
         <div class="grid2">
           <div>
-            <label class="f" for="known">Products you already know <span class="opt">(optional)</span></label>
-            <textarea id="known" data-key="market.known" placeholder="e.g. Google Calendar, Notion, MyPack Portal"></textarea>
+            <label class="f" for="known">Examples you already know <span class="opt">(optional)</span></label>
+            <textarea id="known" data-key="market.known" placeholder="e.g. Google Calendar, Notion · HackNC, TreeHacks · Smith et al. 2021"></textarea>
           </div>
           <div>
-            <label class="f" for="focus">Market or region focus <span class="opt">(optional)</span></label>
-            <textarea id="focus" data-key="market.focus" placeholder="e.g. US universities; free tools for students"></textarea>
+            <label class="f" for="focus">Region, field or scope focus <span class="opt">(optional)</span></label>
+            <textarea id="focus" data-key="market.focus" placeholder="e.g. US universities; free tools for students · public art in the Southeast US · urban heat research since 2015"></textarea>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 2 · Copy</span> Market research prompt</h3>
+        <h3><span class="step">Step 2 · Copy</span> Background research prompt</h3>
         <p class="hint">Use an LLM with web search turned on, if you can. Research answers are only as good as their sources.</p>
-        <div class="missing" data-missing="2"></div>
+        <div class="missing" data-missing="background"></div>
         <div class="prompt-wrap"><pre class="prompt" data-prompt="p2"></pre></div>
         <div class="btns"><button class="btn primary" data-copy="p2">Copy prompt</button></div>
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 3 · Paste</span> Market research from the LLM</h3>
-        <textarea class="big" data-key="marketOut" placeholder="Paste the market research (Markdown) here…"></textarea>
-        <div class="meta"><span>Check: do the companies and links really exist? Open two or three to verify.</span><span data-count="marketOut"></span></div>
+        <h3><span class="step">Step 3 · Paste</span> Background research from the LLM</h3>
+        <textarea class="big" data-key="marketOut" placeholder="Paste the background research (Markdown) here…"></textarea>
+        <div class="meta"><span>Check: do the examples and links really exist? Open two or three to verify.</span><span data-count="marketOut"></span></div>
       </div>
 
-      <div class="nav"><button class="btn" data-go="1">← Users</button><button class="btn primary" data-go="3">Next: Problems &amp; gap →</button></div>
+      <div class="nav" data-nav="background"></div>
     </section>
 
     <!-- ================= STAGE 3: PROBLEMS ================= -->
-    <section class="stage" data-stage="3">
+    <section class="stage" data-stage="problems">
       <header>
-        <div class="eyebrow">Stage 3 · Problem isolation &amp; market gap</div>
-        <h2>What is broken in existing products?</h2>
-        <p class="lead">This prompt asks the LLM to research the real problems users report for each competitor you found, then find patterns and gaps your product could fill.</p>
+        <div class="eyebrow">Stage 3 · Problems &amp; gaps</div>
+        <h2>What is missing in existing work?</h2>
+        <p class="lead">This prompt asks the LLM to research the real problems and criticisms people report for each example you found, then find patterns and gaps your project could fill. It needs the Background research from Stage 2.</p>
+        <div class="flow-ctl" data-flow="problems"></div>
       </header>
 
       <details class="think" open>
         <summary>Think first</summary>
         <ul>
-          <li>Which complaints would matter most to <em>your</em> users, not users in general?</li>
-          <li>Is a problem common, or did one angry review mention it once?</li>
+          <li>Which complaints or criticisms would matter most to <em>your</em> audience, not people in general?</li>
+          <li>Is a problem common, or did one person mention it once?</li>
           <li>Which findings are backed by a source, and which are guesses?</li>
         </ul>
       </details>
 
       <div class="card">
         <h3><span class="step">Step 1 · Copy</span> Problem research prompt</h3>
-        <p class="hint">This prompt already includes your idea, your users and the market research you pasted in Stage 2.</p>
-        <div class="missing" data-missing="3"></div>
+        <p class="hint">This prompt already includes your idea, your audience (if selected) and the background research you pasted in Stage 2.</p>
+        <div class="missing" data-missing="problems"></div>
         <div class="prompt-wrap"><pre class="prompt" data-prompt="p3"></pre></div>
         <div class="btns"><button class="btn primary" data-copy="p3">Copy prompt</button></div>
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 2 · Paste</span> Problems &amp; market gaps from the LLM</h3>
+        <h3><span class="step">Step 2 · Paste</span> Problems &amp; gaps from the LLM</h3>
         <textarea class="big" data-key="problemsOut" placeholder="Paste the problem research (Markdown) here…"></textarea>
         <div class="meta"><span>Check: is each problem tied to evidence? Highlight the 2–3 that matter most to you.</span><span data-count="problemsOut"></span></div>
       </div>
 
-      <div class="nav"><button class="btn" data-go="2">← Market</button><button class="btn primary" data-go="4">Next: Differentiate →</button></div>
+      <div class="nav" data-nav="problems"></div>
     </section>
 
     <!-- ================= STAGE 4: DIFFERENTIATE ================= -->
-    <section class="stage" data-stage="4">
+    <section class="stage" data-stage="diff">
       <header>
         <div class="eyebrow">Stage 4 · Differentiate &amp; reframe</div>
         <h2>Design what makes yours different</h2>
-        <p class="lead">This is the most important thinking step, and it is yours. Based on what you learned, decide what your product will do differently. Then get a clear 500-word description written in simple, precise English.</p>
+        <p class="lead">This is the most important thinking step, and it is yours. Based on what you learned, decide what your project will do differently. Then get a clear 500-word description written in simple, precise English.</p>
+        <div class="flow-ctl" data-flow="diff"></div>
       </header>
 
       <details class="think" open>
         <summary>Think first</summary>
         <ul>
-          <li>Which one or two problems from Stage 3 will you solve better than anyone else?</li>
+          <li>Which one or two problems or gaps will you address better than anyone else?</li>
           <li>What will you deliberately <em>not</em> do?</li>
           <li>Has your original idea changed? Rewrite it honestly, even if it changed a lot.</li>
         </ul>
@@ -354,9 +405,9 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
 
       <div class="card">
         <h3><span class="step">Step 1 · Your input</span> Your differentiation</h3>
-        <label class="f" for="dDiff">What will your product do differently from the competitors? <span class="opt">(1–2 lines)</span></label>
+        <label class="f" for="dDiff">What will your project do differently from what already exists? <span class="opt">(1–2 lines)</span></label>
         <textarea id="dDiff" data-key="diff.different" placeholder="e.g. It plans around work shifts and commute time, not only class times."></textarea>
-        <label class="f" for="dSolve">Which problems in existing products will it solve? <span class="opt">(1–2 lines)</span></label>
+        <label class="f" for="dSolve">Which problems or gaps in existing work will it address? <span class="opt">(1–2 lines)</span></label>
         <textarea id="dSolve" data-key="diff.solves" placeholder="e.g. Existing planners need too much manual setup and ignore off-campus commitments."></textarea>
         <label class="f" for="dRe">Your reframed idea <span class="opt">(rewrite the idea using what you learned)</span></label>
         <textarea id="dRe" data-key="diff.reframed" style="min-height:140px" placeholder="Describe the new, differentiated version of your idea in your own words…"></textarea>
@@ -365,8 +416,8 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
 
       <div class="card">
         <h3><span class="step">Step 2 · Download + copy</span> Context file and prompt</h3>
-        <p class="hint">Give the LLM <b>two things</b>: attach <code>midway_context.txt</code> (your idea, users, stories, competitors and problems), then paste the prompt.</p>
-        <div class="missing" data-missing="4"></div>
+        <p class="hint">Give the LLM <b>two things</b>: attach <code>midway_context.txt</code> (your idea and the research from the sections you selected), then paste the prompt.</p>
+        <div class="missing" data-missing="diff"></div>
         <div class="btns">
           <button class="btn primary" data-download="ctx4" data-filename="midway_context.txt">⬇ Download midway_context.txt</button>
           <button class="btn primary" data-copy="p4">Copy prompt</button>
@@ -380,34 +431,35 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 3 · Paste</span> 500-word product description</h3>
+        <h3><span class="step">Step 3 · Paste</span> 500-word project description</h3>
         <p class="hint">Later stages use this text. Edit it until every sentence is true to your idea.</p>
-        <textarea class="big" data-key="productDesc" style="font-family:inherit;font-size:14.5px" placeholder="Paste the two-paragraph, ~500-word product description here…"></textarea>
-        <div class="meta"><span>Check: two paragraphs? Short, clear sentences? No features you did not ask for?</span><span data-count="productDesc" data-target="500"></span></div>
+        <textarea class="big" data-key="productDesc" style="font-family:inherit;font-size:14.5px" placeholder="Paste the two-paragraph, ~500-word project description here…"></textarea>
+        <div class="meta"><span>Check: two paragraphs? Short, clear sentences? Nothing you didn't ask for?</span><span data-count="productDesc" data-target="500"></span></div>
       </div>
 
-      <div class="nav"><button class="btn" data-go="3">← Problems</button><button class="btn primary" data-go="5">Next: Interactions →</button></div>
+      <div class="nav" data-nav="diff"></div>
     </section>
 
     <!-- ================= STAGE 5: INTERACTIONS ================= -->
-    <section class="stage" data-stage="5">
+    <section class="stage" data-stage="interact">
       <header>
         <div class="eyebrow">Stage 5 · Interaction diagram</div>
-        <h2>Draw how people use your product</h2>
-        <p class="lead">Draw your interaction diagram on paper, take a photo, and give it to the LLM with the prompt below. The LLM turns your drawing into clear, end-to-end interaction flows.</p>
+        <h2>Draw how people engage with your project</h2>
+        <p class="lead">Draw your interaction diagram on paper, take a photo, and give it to the LLM with the prompt below. The LLM turns your drawing into clear, end-to-end interaction flows. This works for an app, a device, an event, an exhibition or a paper's review process.</p>
+        <div class="flow-ctl" data-flow="interact"></div>
       </header>
 
       <div class="card">
         <h3><span class="step">Learn</span> What is an interaction diagram?</h3>
         <div class="explain">
-          <p>An interaction diagram (often drawn as a <b>use-case diagram</b>) shows <em>who</em> uses your product and <em>what</em> they can do with it. It is a map of interactions, not a step-by-step flowchart. It has four parts:</p>
+          <p>An interaction diagram (often drawn as a <b>use-case diagram</b>) shows <em>who</em> engages with your project and <em>what</em> they can do with it. It is a map of interactions, not a step-by-step flowchart. It has four parts:</p>
           <ul>
-            <li><b>Actors</b> are stick figures. Each one is a type of user from Stage 1, or an outside system such as a campus login, a calendar or a payment service. Put actors who start actions on the left. Put supporting actors and outside systems on the right.</li>
-            <li><b>The system boundary</b> is a large box labelled with your product name. Everything inside the box is what your product does. Everything outside is not your product.</li>
-            <li><b>Use cases</b> are ovals inside the box. Each oval is one goal an actor can reach, written as verb + noun: “Book a room”, “Send reminder”.</li>
+            <li><b>Actors</b> are stick figures. Each one is an audience group from Stage 1 (a user, an attendee, a reader, a reviewer, a vendor) or an outside system or organisation, such as a campus login, a ticketing service, a venue or a journal's submission system. Put actors who start actions on the left. Put supporting actors and outside systems on the right.</li>
+            <li><b>The system boundary</b> is a large box labelled with your project's name. Everything inside the box is what your project does or offers. Everything outside is not part of it.</li>
+            <li><b>Use cases</b> are ovals inside the box. Each oval is one goal an actor can reach, written as verb + noun: “Book a room”, “Buy a ticket”, “Submit a review”.</li>
             <li><b>Lines</b> connect each actor to every oval they take part in.</li>
           </ul>
-          <p><b>How to draw yours:</b> (1) Draw one stick figure per user type. (2) For each one, write 3–6 goals as ovals. (3) Draw the system box around the ovals. (4) Connect actors to ovals. (5) Add outside systems your product depends on.</p>
+          <p><b>How to draw yours:</b> (1) Draw one stick figure per audience group. (2) For each one, write 3–6 goals as ovals. (3) Draw the system box around the ovals. (4) Connect actors to ovals. (5) Add outside systems or organisations your project depends on.</p>
           <p><b>Check:</b> every actor has at least one line, every oval connects to an actor, and every oval name starts with a verb.</p>
         </div>
         <figure class="diagram" style="margin:12px 0 0">
@@ -448,29 +500,29 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
               <line x1="560" y1="114" x2="440" y2="190"/>
             </g>
           </svg>
-          <figcaption>Example: a campus study-room finder. Two user types, one outside system, five goals.</figcaption>
+          <figcaption>Example: a campus study-room finder. Two audience groups, one outside system, five goals. For an event, actors might be Attendee, Speaker and Ticketing service.</figcaption>
         </figure>
       </div>
 
       <details class="think">
         <summary>Think first</summary>
         <ul>
-          <li>Did you include every user type from Stage 1? If one has no ovals, should they be in the product at all?</li>
-          <li>Which goals are shared by several users? Which belong to only one?</li>
-          <li>What outside services must your product talk to?</li>
+          <li>Did you include every audience group? If one has no ovals, should they be part of the project at all?</li>
+          <li>Which goals are shared by several groups? Which belong to only one?</li>
+          <li>Which outside services, organisations or places does your project depend on?</li>
         </ul>
       </details>
 
       <div class="card">
         <h3><span class="step">Step 1 · Your input</span> Describe your diagram <span class="opt hint" style="font-weight:400">(optional)</span></h3>
-        <p class="hint">You will attach a photo of your drawing. If your LLM cannot read images, or your handwriting is hard to read, also list the actors and ovals here.</p>
+        <p class="hint">You will attach a photo of your drawing. If your LLM can't read images, or your handwriting is hard to read, also list the actors and ovals here.</p>
         <textarea data-key="diagramText" placeholder="Actors: Student, Advisor, Campus login (outside system)&#10;Student → Create weekly plan, Import class schedule, Get conflict alert…&#10;Advisor → View student plan (with permission)…"></textarea>
       </div>
 
       <div class="card">
         <h3><span class="step">Step 2 · Copy + attach</span> Interaction flow prompt</h3>
         <p class="hint">Paste this prompt <b>and attach the photo</b> of your interaction diagram.</p>
-        <div class="missing" data-missing="5"></div>
+        <div class="missing" data-missing="interact"></div>
         <div class="prompt-wrap"><pre class="prompt" data-prompt="p5"></pre></div>
         <div class="btns"><button class="btn primary" data-copy="p5">Copy prompt</button></div>
       </div>
@@ -481,23 +533,24 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
         <div class="meta"><span>Check: does every oval in your drawing have a flow? Did the LLM flag anything unclear?</span><span data-count="interactions" data-target="1000"></span></div>
       </div>
 
-      <div class="nav"><button class="btn" data-go="4">← Differentiate</button><button class="btn primary" data-go="6">Next: Legal →</button></div>
+      <div class="nav" data-nav="interact"></div>
     </section>
 
     <!-- ================= STAGE 6: LEGAL ================= -->
-    <section class="stage" data-stage="6">
+    <section class="stage" data-stage="legal">
       <header>
-        <div class="eyebrow">Stage 6 · Legal &amp; compliance</div>
-        <h2>What rules must the product follow?</h2>
-        <p class="lead">Many good ideas fail because they ignore privacy, accessibility or other laws. This prompt asks for a thorough legal and regulatory check of your product description.</p>
+        <div class="eyebrow">Stage 6 · Legal, compliance &amp; ethics</div>
+        <h2>What rules must the project follow?</h2>
+        <p class="lead">Many good ideas fail because they ignore privacy, accessibility, safety, permits, copyright or research ethics. This prompt asks for a thorough check of the rules that apply to your kind of project.</p>
+        <div class="flow-ctl" data-flow="legal"></div>
       </header>
 
       <details class="think" open>
         <summary>Think first</summary>
         <ul>
-          <li>What personal data will you collect? Student records, location, health, payment?</li>
-          <li>Will minors use it? Where will it be used: one campus, one state, many countries?</li>
-          <li>Does it make decisions about people, or use AI to generate content?</li>
+          <li>What personal data will you collect? Will you work with human participants, children, or the public?</li>
+          <li>Is there a physical product, a venue, food, money or crowds involved?</li>
+          <li>Will you use other people's work (images, music, code, data, text) or AI-generated content?</li>
         </ul>
       </details>
 
@@ -505,50 +558,147 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
         <h3><span class="step">Step 1 · Your input</span> Context for the check <span class="opt hint" style="font-weight:400">(optional, but improves results)</span></h3>
         <div class="grid2">
           <div>
-            <label class="f" for="lReg">Where will it be used?</label>
-            <textarea id="lReg" data-key="legal.regions" placeholder="e.g. NC State University, North Carolina, USA"></textarea>
+            <label class="f" for="lReg">Where will it be used, sold, held or published?</label>
+            <textarea id="lReg" data-key="legal.regions" placeholder="e.g. NC State University, North Carolina, USA · an EU-based journal · a public park in Raleigh"></textarea>
           </div>
           <div>
-            <label class="f" for="lData">What data will it collect or use?</label>
-            <textarea id="lData" data-key="legal.data" placeholder="e.g. student name, class schedule, work hours, location"></textarea>
+            <label class="f" for="lData">What data, materials or people will it involve?</label>
+            <textarea id="lData" data-key="legal.data" placeholder="e.g. student names and schedules · lithium batteries · survey participants · licensed photographs"></textarea>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 2 · Copy</span> Legal check prompt</h3>
-        <div class="missing" data-missing="6"></div>
+        <h3><span class="step">Step 2 · Copy</span> Legal &amp; ethics check prompt</h3>
+        <div class="missing" data-missing="legal"></div>
         <div class="prompt-wrap"><pre class="prompt" data-prompt="p6"></pre></div>
         <div class="btns"><button class="btn primary" data-copy="p6">Copy prompt</button></div>
       </div>
 
       <div class="card">
-        <h3><span class="step">Step 3 · Paste</span> Legal &amp; compliance findings</h3>
-        <p class="hint">This is a starting checklist, not legal advice. Confirm important items with your institution's legal or compliance office.</p>
-        <textarea class="big" data-key="legalOut" placeholder="Paste the legal and compliance review (Markdown) here…"></textarea>
-        <div class="meta"><span>Check: are laws named with sources? Which items need a real expert?</span><span data-count="legalOut"></span></div>
+        <h3><span class="step">Step 3 · Paste</span> Legal, compliance &amp; ethics findings</h3>
+        <p class="hint">This is a starting checklist, not legal advice. Confirm important items with your institution's legal, compliance or ethics office.</p>
+        <textarea class="big" data-key="legalOut" placeholder="Paste the legal, compliance and ethics review (Markdown) here…"></textarea>
+        <div class="meta"><span>Check: are laws and rules named with sources? Which items need a real expert?</span><span data-count="legalOut"></span></div>
       </div>
 
-      <div class="nav"><button class="btn" data-go="5">← Interactions</button><button class="btn primary" data-go="7">Next: Compile →</button></div>
+      <div class="nav" data-nav="legal"></div>
     </section>
 
-    <!-- ================= STAGE 7: COMPILE ================= -->
-    <section class="stage" data-stage="7">
+    <!-- ================= STAGE 7: COST ================= -->
+    <section class="stage" data-stage="cost">
       <header>
-        <div class="eyebrow">Stage 7 · Compile</div>
-        <h2>Build your product description document</h2>
-        <p class="lead">Everything you made is compiled into one file, <code>context.txt</code>. Give it to an LLM with the final prompt to get a complete, well-structured product description document.</p>
+        <div class="eyebrow">Stage 7 · Cost</div>
+        <h2>What will it really cost?</h2>
+        <p class="lead">First, you name the main things you will have to pay for. Then the LLM researches real prices and builds a realistic estimate and budget from your list.</p>
+        <div class="flow-ctl" data-flow="cost"></div>
+      </header>
+
+      <details class="think" open>
+        <summary>Think first</summary>
+        <ul>
+          <li>What do you pay for once (materials, equipment, set-up), and what keeps costing money (hosting, rent, staff, subscriptions)?</li>
+          <li>Where does the money go: materials, people's time, tools and software, venue, licences, travel, printing, publication fees?</li>
+          <li>At what point in the project does each cost come in: design, build, launch, each event, each month, publication?</li>
+        </ul>
+      </details>
+
+      <div class="card">
+        <h3><span class="step">Step 1 · Your input</span> Core sources of cost</h3>
+        <p class="hint">List at least 4–5. For each one, briefly say what the cost is, where the money goes, and where it comes in for your project.</p>
+        <div id="costList"></div>
+        <div class="btns"><button class="btn" data-add="costs">+ Add another cost source</button></div>
+        <div class="grid2" style="margin-top:6px">
+          <div>
+            <label class="f" for="cScale">Scale and timeframe <span class="opt">(optional)</span></label>
+            <textarea id="cScale" data-key="cost.scale" placeholder="e.g. first year of operation · prototype of 50 units · one 300-person event · one paper submission"></textarea>
+          </div>
+          <div>
+            <label class="f" for="cRegion">Currency and region <span class="opt">(optional)</span></label>
+            <textarea id="cRegion" data-key="cost.region" placeholder="e.g. USD, North Carolina · INR, Bengaluru · EUR, Germany"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="step">Step 2 · Copy</span> Cost research prompt</h3>
+        <p class="hint">Use an LLM with web search turned on, so prices come from real sources.</p>
+        <div class="missing" data-missing="cost"></div>
+        <div class="prompt-wrap"><pre class="prompt" data-prompt="pCost"></pre></div>
+        <div class="btns"><button class="btn primary" data-copy="pCost">Copy prompt</button></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="step">Step 3 · Paste</span> Cost estimates from the LLM</h3>
+        <textarea class="big" data-key="costOut" placeholder="Paste the cost research and budget (Markdown) here…"></textarea>
+        <div class="meta"><span>Check: are prices tied to real sources? Do the totals add up? Did it add costs you forgot?</span><span data-count="costOut"></span></div>
+      </div>
+
+      <div class="nav" data-nav="cost"></div>
+    </section>
+
+    <!-- ================= STAGE 8: COLLABORATION ================= -->
+    <section class="stage" data-stage="collab">
+      <header>
+        <div class="eyebrow">Stage 8 · Collaboration &amp; help</div>
+        <h2>Who can help you make it happen?</h2>
+        <p class="lead">No project is made alone. List the people, groups and organisations you already think could help. The LLM then checks them and finds more concrete leads, with evidence: mentors, partners, communities, funders, venues and platforms.</p>
+        <div class="flow-ctl" data-flow="collab"></div>
+      </header>
+
+      <details class="think" open>
+        <summary>Think first</summary>
+        <ul>
+          <li>What do you lack: skills, money, space, equipment, data, an audience, credibility?</li>
+          <li>Who already works on this problem: professors, labs, clubs, companies, non-profits, online communities?</li>
+          <li>Who do you already know who could introduce you to someone useful?</li>
+        </ul>
+      </details>
+
+      <div class="card">
+        <h3><span class="step">Step 1 · Your input</span> Initial sources of help</h3>
+        <p class="hint">Start with at least 3. Rough ideas are fine; the LLM will check them and look for more.</p>
+        <div id="collabList"></div>
+        <div class="btns"><button class="btn" data-add="collabs">+ Add another source</button></div>
+        <label class="f" for="cNeeds">What help do you need most? <span class="opt">(optional)</span></label>
+        <textarea id="cNeeds" data-key="collab.needs" placeholder="e.g. a faculty mentor in public health · $2,000 for materials · a venue for 200 people · beta testers · a co-author with statistics skills"></textarea>
+      </div>
+
+      <div class="card">
+        <h3><span class="step">Step 2 · Copy</span> Collaboration research prompt</h3>
+        <p class="hint">Use an LLM with web search turned on. You want real names, links and next steps, not generic advice.</p>
+        <div class="missing" data-missing="collab"></div>
+        <div class="prompt-wrap"><pre class="prompt" data-prompt="pCollab"></pre></div>
+        <div class="btns"><button class="btn primary" data-copy="pCollab">Copy prompt</button></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="step">Step 3 · Paste</span> Collaboration leads from the LLM</h3>
+        <textarea class="big" data-key="collabOut" placeholder="Paste the collaboration and support leads (Markdown) here…"></textarea>
+        <div class="meta"><span>Check: open the links. Are the people and programmes real and current? Are deadlines still open?</span><span data-count="collabOut"></span></div>
+      </div>
+
+      <div class="nav" data-nav="collab"></div>
+    </section>
+
+    <!-- ================= STAGE 9: FINAL DOCUMENT ================= -->
+    <section class="stage" data-stage="doc">
+      <header>
+        <div class="eyebrow">Stage 9 · Final document</div>
+        <h2>Build your project description document</h2>
+        <p class="lead">Everything from the sections you selected is compiled into one file, <code>context.txt</code>. Give it to an LLM with the final prompt to get a complete, well-structured project description document, drafted on the LLM's canvas so you can edit it.</p>
       </header>
 
       <div class="card">
         <h3><span class="step">Review</span> What goes into context.txt</h3>
         <div class="summary-list" id="summaryList"></div>
-        <div class="missing" data-missing="7"></div>
+        <div class="skipped-note" id="skippedNote"></div>
+        <div class="missing" data-missing="doc"></div>
       </div>
 
       <div class="card">
         <h3><span class="step">Step 1 · Download + copy</span> Context file and final prompt</h3>
-        <p class="hint">Attach <code>context.txt</code> to your LLM, then paste the prompt.</p>
+        <p class="hint">Attach <code>context.txt</code> to your LLM, then paste the prompt. The prompt asks the LLM to draft the document on its canvas (for example Claude artifacts, ChatGPT Canvas or Gemini Canvas).</p>
         <div class="btns">
           <button class="btn primary" data-download="ctx7" data-filename="context.txt">⬇ Download context.txt</button>
           <button class="btn primary" data-copy="p7">Copy final prompt</button>
@@ -566,15 +716,11 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
 
       <div class="card">
         <h3><span class="step">Reflect</span> Before you finish</h3>
-        <ul class="hint" style="margin:0;padding-left:20px">
-          <li>What was unclear in your first idea? Compare Stage 0 with your reframed idea in Stage 4.</li>
-          <li>Which more precise description changed the AI's output the most?</li>
-          <li>What is still an assumption? What is the next small test you could run with a real user?</li>
-        </ul>
+        <ul class="hint" id="reflectList" style="margin:0;padding-left:20px"></ul>
         <div class="btns"><button class="btn" id="exportBtn2">Save project checkpoint (.json)</button></div>
       </div>
 
-      <div class="nav"><button class="btn" data-go="6">← Legal</button><span></span></div>
+      <div class="nav" data-nav="doc"></div>
     </section>
 
     <div class="mobile-tools">
@@ -592,23 +738,31 @@ pre.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:10px;pad
 (function(){
 'use strict';
 
+/* ================= HELPERS ================= */
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const t = s => (s||'').trim();
+const has = s => t(s).length>0;
+const v = (s, fb='[not provided]') => has(s) ? t(s) : fb;
+const words = s => t(s) ? t(s).split(/\s+/).length : 0;
+const opt = (cond, s) => (cond && s) ? s + '\n\n' : '';
+const today = () => new Date().toISOString().slice(0,10);
+const HR = '='.repeat(72);
+const hr = '-'.repeat(72);
+
 /* ================= STATE ================= */
 const KEY = 'dt-prompt-builder.v1';
-const STAGES = [
-  {title:'Idea',          sub:'Your starting point'},
-  {title:'Users',         sub:'Who and user stories'},
-  {title:'Market',        sub:'Similar products'},
-  {title:'Problems & gap',sub:'What is broken'},
-  {title:'Differentiate', sub:'Reframe + 500 words'},
-  {title:'Interactions',  sub:'Diagram to flows'},
-  {title:'Legal',         sub:'Rules to follow'},
-  {title:'Compile',       sub:'context.txt + final prompt'}
-];
+const OPTIONAL = ['audience','background','problems','diff','interact','legal','cost','collab'];
+const OLD_ORDER = ['idea','audience','background','problems','diff','interact','legal','doc']; // numeric stage index in older saves
 
+const row = () => ({name:'',desc:''});
 function blank(){
   return {
     idea:{title:'',summary:'',description:''},
-    users:[{name:'',desc:''},{name:'',desc:''},{name:'',desc:''}],
+    projectType:'',
+    projectTypeOther:'',
+    selected:Object.fromEntries(OPTIONAL.map(id=>[id,true])),
+    users:[row(),row(),row()],
     stories:'',
     market:{known:'',focus:''},
     marketOut:'',
@@ -619,22 +773,55 @@ function blank(){
     interactions:'',
     legal:{regions:'',data:''},
     legalOut:'',
-    stage:0
+    costs:[row(),row(),row(),row()],
+    cost:{scale:'',region:''},
+    costOut:'',
+    collabs:[row(),row(),row()],
+    collab:{needs:''},
+    collabOut:'',
+    stage:'idea'
   };
 }
 function merge(base, obj){
   if(!obj || typeof obj!=='object') return base;
   for(const k of Object.keys(base)){
     if(!(k in obj)) continue;
-    if(Array.isArray(base[k])) base[k] = Array.isArray(obj[k]) ? obj[k].map(u=>({name:String(u.name||''),desc:String(u.desc||'')})) : base[k];
-    else if(base[k] && typeof base[k]==='object') base[k] = merge(base[k], obj[k]);
-    else base[k] = (typeof base[k]==='number') ? (Number(obj[k])||0) : String(obj[k]??'');
+    const b = base[k], o = obj[k];
+    if(Array.isArray(b)) base[k] = Array.isArray(o) ? o.map(u=>({name:String((u&&u.name)||''),desc:String((u&&u.desc)||'')})) : b;
+    else if(typeof b==='boolean') base[k] = !!o;
+    else if(b && typeof b==='object') base[k] = merge(b, o);
+    else base[k] = String(o ?? '');
   }
   return base;
 }
+
+/* ---------- repeatable lists ---------- */
+const LISTS = {
+  users:{box:'#userList', min:3, noun:'Group',
+    names:['e.g. Commuting first-year student','e.g. Event volunteer','e.g. Academic advisor','e.g. Gallery visitor','e.g. Journal reviewer'],
+    desc:'Who are they? What is their day like? What do they need or struggle with?'},
+  costs:{box:'#costList', min:4, noun:'Cost source',
+    names:['e.g. Materials and parts','e.g. Venue hire','e.g. Software, hosting and licences','e.g. Printing or publication fees','e.g. Travel'],
+    desc:'What is this cost? Where does the money go? Where does it come in for your project?'},
+  collabs:{box:'#collabList', min:3, noun:'Source of help',
+    names:['e.g. Prof. Rao, Design department','e.g. Campus makerspace','e.g. City arts council','e.g. r/hackathons community'],
+    desc:'How could they help? How do you know them, or how could you reach them?'}
+};
+function padLists(){ for(const k of Object.keys(LISTS)) while(S[k].length < LISTS[k].min) S[k].push(row()); }
+const validRows = key => S[key].filter(r=>has(r.name));
+function listBlock(key, empty){
+  const rs = validRows(key);
+  return rs.length ? rs.map((r,i)=>`${i+1}. ${t(r.name)}: ${v(r.desc,'[no description]')}`).join('\n') : empty;
+}
+
+function normalise(){
+  padLists();
+  if(/^\d+$/.test(String(S.stage))) S.stage = OLD_ORDER[+S.stage] || 'idea';
+  if(!STAGES.some(s=>s.id===S.stage)) S.stage = 'idea';
+  if(S.selected.problems && !S.selected.background) S.selected.problems = false;
+}
+
 let S = blank();
-try{ const raw = localStorage.getItem(KEY); if(raw) S = merge(blank(), JSON.parse(raw)); }catch(e){}
-while(S.users.length < 3) S.users.push({name:'',desc:''});
 
 let saveTimer=null;
 function save(){
@@ -642,203 +829,278 @@ function save(){
   saveTimer = setTimeout(()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }, 250);
 }
 function getPath(p){ return p.split('.').reduce((o,k)=>o==null?o:o[k], S); }
-function setPath(p,v){ const ks=p.split('.'); let o=S; for(let i=0;i<ks.length-1;i++) o=o[ks[i]]; o[ks[ks.length-1]]=v; }
+function setPath(p,val){ const ks=p.split('.'); let o=S; for(let i=0;i<ks.length-1;i++) o=o[ks[i]]; o[ks[ks.length-1]]=val; }
 
-/* ================= HELPERS ================= */
-const $ = (s,r=document)=>r.querySelector(s);
-const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
-const t = s => (s||'').trim();
-const has = s => t(s).length>0;
-const v = (s, fb='[not provided]') => has(s) ? t(s) : fb;
-const words = s => t(s) ? t(s).split(/\s+/).length : 0;
-const validUsers = () => S.users.filter(u=>has(u.name));
-const productName = () => v(S.idea.title,'the product');
-const today = () => new Date().toISOString().slice(0,10);
-const HR = '='.repeat(72);
-const hr = '-'.repeat(72);
+/* ================= STAGE REGISTRY ================= */
+const STAGES = [
+  {id:'idea',       title:'Idea',                 sub:'Your starting point',        required:true,
+    ok:()=>has(S.idea.title)&&has(S.idea.summary), miss:'add a working name and a one-sentence idea.'},
+  {id:'audience',   title:'Audience',             sub:'Who it is for + stories',
+    pick:'Who your project is for, and stories of how each group will experience it.',
+    ok:()=>validRows('users').length>=3 && has(S.stories), miss:'need 3+ audience groups and pasted audience stories.'},
+  {id:'background', title:'Background research',  sub:'What already exists',
+    pick:'Existing products, projects, events, artworks or prior research like yours.',
+    ok:()=>has(S.marketOut), miss:'background research not pasted.'},
+  {id:'problems',   title:'Problems & gaps',      sub:'What is missing out there',
+    pick:'Problems people report with existing work, and the gaps you could fill. Needs Background research.',
+    ok:()=>has(S.problemsOut), miss:'problem research not pasted.'},
+  {id:'diff',       title:'Differentiate',        sub:'Reframe + 500 words',
+    pick:'Decide what makes yours different and get a precise 500-word description.',
+    ok:()=>has(S.diff.different)&&has(S.diff.solves)&&has(S.diff.reframed)&&has(S.productDesc), miss:'differentiation fields or 500-word description missing.'},
+  {id:'interact',   title:'Interactions',         sub:'Diagram to flows',
+    pick:'Turn a hand-drawn diagram of who does what into clear interaction flows.',
+    ok:()=>has(S.interactions), miss:'interaction flows not pasted.'},
+  {id:'legal',      title:'Legal & ethics',       sub:'Rules to follow',
+    pick:'Laws, standards, permits, copyright and research-ethics rules that apply.',
+    ok:()=>has(S.legalOut), miss:'legal and ethics review not pasted.'},
+  {id:'cost',       title:'Cost',                 sub:'Sources + estimates',
+    pick:'List your main cost sources, then get researched estimates and a budget.',
+    ok:()=>validRows('costs').length>=4 && has(S.costOut), miss:'need 4+ cost sources and pasted cost estimates.'},
+  {id:'collab',     title:'Collaboration & help', sub:'Who can help',
+    pick:'People, groups, partners and funders who could help, plus new concrete leads.',
+    ok:()=>validRows('collabs').length>=1 && has(S.collabOut), miss:'need initial sources of help and pasted collaboration leads.'},
+  {id:'doc',        title:'Final document',       sub:'context.txt + final prompt', required:true,
+    ok:()=>flow().filter(s=>s.id!=='doc').every(s=>s.ok()), miss:''}
+];
+// Hard dependencies: a stage cannot be in the flow without these.
+const HARD = {problems:['background']};
 
-function ideaBlock(){
+const byId = id => STAGES.find(s=>s.id===id);
+const idx  = id => STAGES.findIndex(s=>s.id===id);
+const isOn = id => { const s=byId(id); return !!s && (s.required || !!S.selected[id]); };
+const flow = () => STAGES.filter(s=>isOn(s.id));
+function nextOn(id){ for(let i=idx(id)+1;i<STAGES.length;i++) if(isOn(STAGES[i].id)) return STAGES[i]; return null; }
+function prevOn(id){ for(let i=idx(id)-1;i>=0;i--) if(isOn(STAGES[i].id)) return STAGES[i]; return null; }
+const stageRef = id => `Stage ${idx(id)} · ${byId(id).title}`;
+
+try{ const raw = localStorage.getItem(KEY); if(raw) S = merge(blank(), JSON.parse(raw)); }catch(e){}
+normalise();
+
+/* ================= PROJECT TYPE ================= */
+const TYPES = {
+  software:{label:'Software / app / website',
+    existing:'apps, websites, software products and tools, and the companies behind them',
+    audience:'users, buyers, administrators and support staff',
+    evidence:'app store reviews (Apple App Store, Google Play), review sites (G2, Capterra, Trustpilot), Reddit and other forums, social media, the product\'s own community or support pages, news articles, and accessibility reviews'},
+  hardware:{label:'Hardware / physical product',
+    existing:'physical products, devices and kits, and the companies or makers behind them',
+    audience:'users, buyers, installers, maintainers and retailers',
+    evidence:'retailer reviews (for example Amazon, Best Buy), independent review and teardown sites, YouTube reviews, Reddit and maker forums, recall notices and safety reports, and support pages'},
+  art:{label:'Art / creative work',
+    existing:'artworks, artists, exhibitions, performances, installations and creative projects',
+    audience:'viewers, participants, communities, curators, commissioners and funders',
+    evidence:'critical reviews, press coverage, exhibition and festival write-ups, artist statements and interviews, audience comments and social media, and community discussions'},
+  event:{label:'Event',
+    existing:'similar events, conferences, festivals, hackathons, workshops and the organisations that run them',
+    audience:'attendees, speakers or performers, sponsors, volunteers, vendors and venue staff',
+    evidence:'attendee reviews and social media posts, event recaps and blog posts, forums, post-event surveys that are public, and news coverage'},
+  academic:{label:'Academic paper / research',
+    existing:'prior papers, literature reviews, datasets, methods, tools and research groups',
+    audience:'readers, reviewers, other researchers, practitioners, policy makers and study participants',
+    evidence:'limitations and future-work sections of papers, review articles, published critiques and replies, replication studies, and citing papers that dispute or extend the findings'},
+  service:{label:'Service / programme',
+    existing:'similar services, programmes, initiatives and the organisations that offer them',
+    audience:'clients or participants, staff, partners, funders and referrers',
+    evidence:'client reviews, forums and social media, public evaluation reports, news articles, and regulator or watchdog reports'},
+  other:{label:'Other',
+    existing:'anything similar that already exists: products, projects, works, events, services or research',
+    audience:'everyone who uses, experiences, runs, pays for or is affected by it',
+    evidence:'reviews, forums, social media, news, reports and published critiques'}
+};
+const typeInfo = () => TYPES[S.projectType] || TYPES.other;
+function typeLabel(){
+  if(S.projectType==='other') return v(S.projectTypeOther,'Other');
+  return S.projectType ? TYPES[S.projectType].label : '[not specified — infer it from the description]';
+}
+const productName = () => v(S.idea.title,'the project');
+
+/* ================= SHARED BLOCKS ================= */
+function projectBlock(){
+  const ti = typeInfo();
   return [
-    'PRODUCT IDEA',
+    'PROJECT',
     'Working name: ' + v(S.idea.title,'[untitled]'),
+    'Project type: ' + typeLabel(),
     'One-sentence idea: ' + v(S.idea.summary),
-    'Description: ' + v(S.idea.description)
+    'Description: ' + v(S.idea.description),
+    '',
+    'NOTE ON TERMS',
+    'In these instructions, "the product" means whatever the team is creating: software, a physical device, an artwork, an event, a research paper, a service, or something else. Adapt every term to fit the project type. For this project, "existing work" means ' + ti.existing + ', and "audience" means ' + ti.audience + '.'
   ].join('\n');
 }
-function usersBlock(){
-  const us = validUsers();
-  if(!us.length) return 'INTENDED USERS\n[no users provided]';
-  return 'INTENDED USERS (defined by the project team)\n' + us.map((u,i)=>`${i+1}. ${t(u.name)}: ${v(u.desc,'[no description]')}`).join('\n');
+function audienceBlock(){
+  const us = validRows('users');
+  if(!us.length) return 'INTENDED AUDIENCE\n[no audience groups provided]';
+  return 'INTENDED AUDIENCE (groups defined by the project team: people who use, attend, read, buy, run or are affected by the product)\n' + listBlock('users','');
 }
-function section(label, body){ return `<<< ${label} — START >>>\n${v(body)}\n<<< ${label} — END >>>`; }
+/** The best available description of the product, given which stages are selected. Empty string when only the idea exists. */
+function descBlock(){
+  if(!isOn('diff')) return '';
+  if(has(S.productDesc)) return 'PRODUCT DESCRIPTION (agreed by the team; the main reference for what the product is)\n' + t(S.productDesc);
+  if(has(S.diff.reframed)) return 'PRODUCT DESCRIPTION (the team\'s reframed idea; the full description is not written yet)\n' + t(S.diff.reframed);
+  return '';
+}
+function skippedLine(ids){
+  const off = ids.filter(id=>!isOn(id)).map(id=>byId(id).title);
+  return off.length ? `Sections the team chose to skip for this project (left out on purpose, not missing): ${off.join(', ')}.` : 'The team did not skip any sections.';
+}
+function renderSections(secs){
+  return secs.map((s,i)=>`${HR}\nSECTION ${i+1} — ${s.title}\nAbout this section: ${s.about}\n${hr}\n${s.body}`).join('\n\n');
+}
 
 /* ================= PROMPTS ================= */
 function p1(){
-  const us = validUsers();
+  const n = validRows('users').length;
   return `ROLE
-You are a senior UX researcher and product designer. You help a project team turn an early product idea into clear, realistic user stories. You work only from the information below. You do not invent new user types.
+You are a senior audience researcher and experience designer. You help a project team turn an early idea into clear, realistic audience stories. You work only from the information below. You do not invent new audience groups.
 
-${ideaBlock()}
+${projectBlock()}
 
-${usersBlock()}
+${audienceBlock()}
 
 YOUR TASK
-For EACH of the ${us.length || 'listed'} users above, write one section with exactly this structure:
+For EACH of the ${n || 'listed'} audience groups above, write one section with exactly this structure:
 
-## User <number>: <user name>
+## Group <number>: <group name>
 **Who they are:** 2-3 sentences on their context, goals, constraints and current frustrations, based on the team's description.
-**User stories:** 3-5 stories in the form "As a <user>, I want <goal>, so that <benefit>."
-**What they expect from the product:** a bullet list of expectations (for example speed, simplicity, trust, cost, accessibility, privacy).
-**How they would use it (scenario):** a short, numbered, step-by-step walkthrough of one realistic session, from the moment the need appears to the moment it is met.
-**How the product should function for them:** the key features and behaviours this user needs, in plain language.
+**Stories:** 3-5 stories in the form "As a <audience member>, I want <goal>, so that <benefit>."
+**What they expect from the product:** a bullet list of expectations (for example ease, speed, quality, trust, cost, accessibility, safety, privacy, credibility).
+**How they would experience it (scenario):** a short, numbered, step-by-step walkthrough of one realistic encounter with the product, from the moment the need appears to the moment it is met.
+**How the product should work for them:** the key features, components or qualities this group needs, in plain language.
 **Acceptance criteria:** 3-5 testable statements in the form "Given ..., when ..., then ...".
-**Assumptions and open questions:** what you had to assume, and what the team should verify by talking to real users.
+**Assumptions and open questions:** what you had to assume, and what the team should verify by talking to real people from this group.
 
-After all user sections, add:
+After all group sections, add:
 
-## Cross-user summary
-A Markdown table with the columns: User | Primary need | Most important feature | Biggest risk if ignored.
-Then 2-4 bullets on where user needs overlap and where they conflict.
+## Cross-group summary
+A Markdown table with the columns: Audience group | Primary need | Most important feature or quality | Biggest risk if ignored.
+Then 2-4 bullets on where the groups' needs overlap and where they conflict.
 
 RULES
-- Use only the users listed above. Do not add new user types.
+- Use only the audience groups listed above. Do not add new groups.
+- Use words that fit the project type (for example "attendee" for an event, "reader" for a paper, "viewer" for an artwork).
 - Mark anything you infer that the team did not state with [ASSUMPTION].
 - Use plain, specific language. No marketing language, no hype.
-- Do not design the whole product. Focus on what each user needs and expects.
+- Do not design the whole product. Focus on what each group needs and expects.
 - Output Markdown only. No introduction and no closing remarks.`;
 }
 
 function p2(){
-  const known = has(S.market.known) ? `\nPRODUCTS THE TEAM ALREADY KNOWS (include these if they are relevant)\n${t(S.market.known)}\n` : '';
-  const focus = has(S.market.focus) ? `\nMARKET / REGION FOCUS\n${t(S.market.focus)}\n` : '';
+  const ti = typeInfo();
+  const aud = isOn('audience');
+  const known = has(S.market.known) ? `EXAMPLES THE TEAM ALREADY KNOWS (include these if they are relevant)\n${t(S.market.known)}\n\n` : '';
+  const focus = has(S.market.focus) ? `REGION, FIELD OR SCOPE FOCUS\n${t(S.market.focus)}\n\n` : '';
   return `ROLE
-You are an experienced market research analyst. You produce a thorough, evidence-based competitive landscape for an early-stage product. Use web search or browsing if you have it. If you cannot browse the web, say so in the first line and label every item that you could not verify as [UNVERIFIED].
+You are an experienced research analyst. You produce a thorough, evidence-based overview of the existing work related to an early-stage project. For this project, existing work means ${ti.existing}. Use web search or browsing if you have it. If you cannot browse the web, say so in the first line and label every item that you could not verify as [UNVERIFIED].
 
-${ideaBlock()}
+${projectBlock()}
 
-${usersBlock()}
-${known}${focus}
-YOUR TASK
-Identify at least 5 and up to 10 companies or products that offer something similar to this idea. Include a mix of:
-- Direct competitors: solve the same problem for the same users.
-- Indirect competitors: solve the same problem in a different way, or for different users.
-- Substitutes: what these users do today instead (for example spreadsheets, group chats, paper, a campus office).
+${opt(aud, audienceBlock())}${known}${focus}YOUR TASK
+Identify at least 5 and up to 10 existing works that are similar to this idea. Include a mix of:
+- Direct alternatives: address the same need for the same audience.
+- Indirect alternatives: address the same need in a different way, or for a different audience.
+- Substitutes: what the audience does today instead (for example spreadsheets, group chats, paper, a local office, an informal meet-up, an older method).
 
-For EACH company, use exactly this structure:
+For EACH one, use exactly this structure:
 
-## <number>. <Company name> — <Product name>
-- **Website:** <URL>
+## <number>. <Name> — <organisation, creator or authors>
+- **Link:** <URL, DOI or other reference>
 - **Category:** Direct / Indirect / Substitute
-- **What the company is:** 1-2 sentences (size, focus, founded, if known).
-- **What the product is:** 1-2 sentences.
-- **Target users:** who it is built for, and which of OUR user types (listed above) it serves.
-- **Core features:** 4-8 bullets.
-- **Pricing / business model:** free, freemium, subscription, institutional licence, ads, etc.
-- **Platforms:** web, iOS, Android, desktop, integrations.
-- **Key differentiator:** what makes this product stand out from the others.
-- **Visible limits:** obvious gaps or limits you can see from the product itself. (Detailed user complaints will be researched separately.)
+- **Who is behind it:** 1-2 sentences (organisation, creator or authors, year, size or reach, if known).
+- **What it is:** 1-2 sentences.
+- **Audience:** who it is for${aud ? ', and which of OUR audience groups (listed above) it serves' : ''}.
+- **Core features or contributions:** 4-8 bullets.
+- **Cost or access model:** for example free, paid, subscription, ticketed, grant-funded, open access, institutional licence.
+- **Format or medium:** for example web or mobile app, physical device, exhibition, in-person event, journal article, dataset, service.
+- **Key differentiator:** what makes it stand out from the others.
+- **Visible limits:** obvious gaps or limits you can see from the work itself. (Detailed criticism will be researched separately.)
 - **Sources:** links you used.
 
 Then add these sections:
 
 ## Comparison matrix
-A Markdown table with the columns: Product | Category | Core features (short) | Pricing | Key differentiator | Which of our users it serves.
+A Markdown table with the columns: Name | Category | Core features (short) | Cost / access | Key differentiator | ${aud ? 'Which of our audience groups it serves' : 'Who it is for'}.
 
 ## Landscape summary
-4-6 bullets: what the market already does well, where it is crowded, and which needs or user types appear underserved.
+4-6 bullets: what existing work already does well, where it is crowded, and which needs${aud ? ' or audience groups' : ''} appear underserved.
 
 ## Confidence notes
 State which facts are verified by a source, which are inferred, and the date your information is current to.
 
 RULES
-- Do not invent companies, products, URLs, prices or numbers. If you are unsure, say so.
-- Prefer current information. Note when a product has shut down or changed.
+- Do not invent organisations, products, works, authors, citations, URLs, prices or numbers. If you are unsure, say so.
+- Prefer current information. Note when something has shut down, ended or been superseded.
 - Be neutral and factual. No recommendations yet.
 - Output Markdown only. No introduction and no closing remarks.`;
 }
 
 function p3(){
+  const ti = typeInfo();
+  const aud = isOn('audience');
   return `ROLE
-You are a user research analyst who specialises in voice-of-customer research. You find, group and weigh the real problems that people report with existing products. Use web search or browsing if you have it. If you cannot browse the web, say so in the first line and label every finding you could not verify as [UNVERIFIED].
+You are a research analyst who specialises in finding, grouping and weighing the real problems people report with existing work. Use web search or browsing if you have it. If you cannot browse the web, say so in the first line and label every finding you could not verify as [UNVERIFIED].
 
-${ideaBlock()}
+${projectBlock()}
 
-${usersBlock()}
-
-COMPETITOR RESEARCH (from an earlier research step)
-${section('MARKET RESEARCH', S.marketOut)}
+${opt(aud, audienceBlock())}BACKGROUND RESEARCH (existing work found in an earlier research step)
+<<< BACKGROUND RESEARCH — START >>>
+${v(S.marketOut)}
+<<< BACKGROUND RESEARCH — END >>>
 
 YOUR TASK
-For EACH product in the competitor research above, research the problems its real users report. Look for evidence in: app store reviews (Apple App Store, Google Play), review sites (G2, Capterra, Trustpilot), Reddit and other forums, social media, the product's own community or support pages, news articles, and accessibility reviews.
+For EACH item in the background research above, research the problems, complaints and criticisms that real people report. For this type of project, look for evidence in: ${ti.evidence}.
 
-For each product, use exactly this structure:
+For each item, use exactly this structure:
 
-## <Product name>
-**Overall user sentiment:** 1-2 sentences.
+## <Name>
+**Overall reception:** 1-2 sentences.
 **Reported problems:** a Markdown table with the columns:
-Problem | Category | Severity | How common | Affected user type(s) | Evidence
-- Category: Usability, Missing feature, Performance/Reliability, Pricing/Value, Onboarding, Accessibility, Privacy/Trust, Support, Integration, or Other.
-- Severity: High / Medium / Low (how much it blocks the user's goal).
+Problem | Category | Severity | How common | Affected ${aud ? 'audience group(s)' : 'people'} | Evidence
+- Category: Usability / Experience, Missing feature or content, Quality / Reliability, Cost / Value, Access / Onboarding, Accessibility, Privacy / Trust / Safety, Support, Method / Rigour, or Other.
+- Severity: High / Medium / Low (how much it blocks people's goals).
 - How common: Widespread / Recurring / Isolated.
-- Affected user type(s): use OUR user types listed above where they apply.
-- Evidence: a source link and a short paraphrase. Do not invent quotes.
-**What users wish it did:** bullets of features or workarounds that users ask for or describe.
+${aud ? '- Affected audience group(s): use OUR audience groups listed above where they apply.\n' : ''}- Evidence: a source link and a short paraphrase. Do not invent quotes.
+**What people wish it did:** bullets of features, changes or workarounds that people ask for or describe.
 
 Then add these sections:
 
-## Cross-product problem patterns
-Problems that appear across several products, ranked by severity and frequency. Name the products each pattern appears in.
+## Cross-cutting problem patterns
+Problems that appear across several items, ranked by severity and frequency. Name the items each pattern appears in.
 
-## Unmet needs of our users
-For EACH of our user types, list the needs that no current product meets well, with a short reason.
+## Unmet needs${aud ? ' of our audience' : ''}
+${aud ? 'For EACH of our audience groups, list' : 'List'} the needs that no existing work meets well, with a short reason.
 
-## Market gap opportunities
-3-6 clearly stated gaps. For each gap give: the gap in one sentence, the evidence, which of our users it affects, and why existing products have not solved it (if known).
+## Gap opportunities
+3-6 clearly stated gaps. For each gap give: the gap in one sentence, the evidence, who it affects, and why existing work has not filled it (if known).
 
 ## Evidence quality
 Separate what is verified by sources, what is anecdotal (one or few reports), and what is your inference.
 
 RULES
-- Paraphrase reviews. Never fabricate quotes, ratings, numbers or sources.
-- Be specific: "sync with Google Calendar fails after an update" is better than "has bugs".
+- Paraphrase sources. Never fabricate quotes, ratings, numbers or sources.
+- Be specific: "sync with Google Calendar fails after an update" is better than "has bugs"; "the study used only 40 participants from one city" is better than "weak method".
 - Do not propose a solution or design the product. Only describe problems and gaps.
 - Output Markdown only. No introduction and no closing remarks.`;
 }
 
+function midwaySections(){
+  const s = [{title:'ORIGINAL IDEA', about:'the idea as the team first wrote it, before any research. Written by the team.', body:projectBlock()}];
+  if(isOn('audience')){
+    s.push({title:'INTENDED AUDIENCE', about:'the audience groups the team identified. Written by the team.', body:audienceBlock()});
+    s.push({title:'AUDIENCE STORIES', about:'what each audience group expects, how they would experience the product, and how it should work for them. AI output, reviewed by the team.', body:v(S.stories)});
+  }
+  if(isOn('background')) s.push({title:'BACKGROUND RESEARCH (EXISTING WORK)', about:'existing work similar to this idea, its core features and differentiators. AI output, reviewed by the team.', body:v(S.marketOut)});
+  if(isOn('problems')) s.push({title:'PROBLEMS IN EXISTING WORK AND GAPS', about:'problems people report with existing work, cross-cutting patterns, unmet needs and gaps. AI output, reviewed by the team.', body:v(S.problemsOut)});
+  return s;
+}
 function ctx4(){
+  const secs = midwaySections();
   return `MIDWAY CONTEXT — ${productName()}
 Generated: ${today()} by the Design Thinking Prompt Builder
-This file contains the research done so far. The person you are helping wrote sections 1 and 2. Sections 3 to 5 are research outputs from an AI model, reviewed by that person.
+This file contains the work done so far. It has ${secs.length} section${secs.length===1?'':'s'}. Each section says who wrote it.
+${skippedLine(['audience','background','problems'])}
 
-${HR}
-SECTION 1 — ORIGINAL IDEA
-About this section: the idea as the team first wrote it, before any research.
-${hr}
-${ideaBlock()}
-
-${HR}
-SECTION 2 — INTENDED USERS
-About this section: the user types the team identified.
-${hr}
-${usersBlock()}
-
-${HR}
-SECTION 3 — USER STORIES
-About this section: what each user expects, how they would use the product, and how it should function for them.
-${hr}
-${v(S.stories)}
-
-${HR}
-SECTION 4 — COMPETITOR / MARKET RESEARCH
-About this section: existing companies and products with similar offerings, their core features and differentiators.
-${hr}
-${v(S.marketOut)}
-
-${HR}
-SECTION 5 — PROBLEMS IN EXISTING PRODUCTS AND MARKET GAPS
-About this section: problems users report with each competitor, cross-product patterns, and unmet needs.
-${hr}
-${v(S.problemsOut)}
+${renderSections(secs)}
 
 ${HR}
 END OF MIDWAY CONTEXT
@@ -847,38 +1109,41 @@ END OF MIDWAY CONTEXT
 
 function p4(attached=true){
   const src = attached ? 'the attached file midway_context.txt' : 'the MIDWAY CONTEXT included above';
+  const titles = midwaySections().map(s=>s.title.toLowerCase()).join(', ');
+  const bg = isOn('background');
+  const aud = isOn('audience');
   return `ROLE
-You are a technical writer who writes in ASD-STE100 Simplified Technical English. You turn product research into a short, clear and exact product description.
+You are a technical writer who writes in ASD-STE100 Simplified Technical English. You turn project research into a short, clear and exact description of the product. The product can be software, a physical device, an artwork, an event, a research paper, a service or something else; use words that fit its type (${typeLabel()}).
 
 CONTEXT
-Read ${src}. It contains the original idea, the intended users, user stories, competitor research, and the problems users have with existing products.
+Read ${src}. It contains: ${titles}.
 
-NEW DECISIONS FROM THE PRODUCT TEAM (these have the highest priority)
-1. What our product will do differently from the competitors:
+NEW DECISIONS FROM THE TEAM (these have the highest priority)
+1. What the product will do differently from existing work:
 ${v(S.diff.different)}
 
-2. Problems in existing products that our product will solve:
+2. Problems or gaps in existing work that the product will address:
 ${v(S.diff.solves)}
 
-3. The reframed product idea, in the team's own words:
+3. The reframed idea, in the team's own words:
 ${v(S.diff.reframed)}
 
 YOUR TASK
-Write a product description of approximately 500 words (between 450 and 550) in exactly 2 paragraphs.
-- Paragraph 1: What the product is. Who uses it. The problem it solves for each main user type. Why existing products do not solve this problem well.
-- Paragraph 2: How the product works. The main features and what each user does with them. How it is different from the competitors. What a successful result looks like for the users.
+Write a description of approximately 500 words (between 450 and 550) in exactly 2 paragraphs.
+- Paragraph 1: What the product is. Who it is for. The problem or need it addresses for each main ${aud ? 'audience group' : 'group of people'}.${bg ? ' Why existing work does not address this well.' : ''}
+- Paragraph 2: How the product works or what it consists of. The main features or components and what each group does with them. How it is different${bg ? ' from existing work' : ''}. What a successful result looks like for the people it serves.
 
 WRITING RULES (ASD-STE100 Simplified Technical English)
 - Write short sentences: no more than 20 words each. Most sentences should be shorter.
 - Use the active voice. Use the present tense.
 - Write one idea in each sentence.
 - Use simple, common words with one clear meaning. Do not use idioms, slang, jargon or marketing words (for example "seamless", "revolutionary", "cutting-edge", "leverage").
-- Use the same term for the same thing every time. Use the product name consistently.
-- Be specific and concrete. Name the users and the features.
+- Use the same term for the same thing every time. Use the product's name consistently.
+- Be specific and concrete. Name the people and the features.
 
 CONTENT RULES
 - Use the team's new decisions as the main direction. Use the context file only to support them.
-- Do not add features, users or claims that are not in the team's decisions or in the context.
+- Do not add features, people or claims that are not in the team's decisions or in the context.
 - If the team's decisions conflict with the research, follow the team's decisions.
 
 OUTPUT FORMAT
@@ -887,177 +1152,237 @@ Plain text only. Two paragraphs. No title, no headings, no bullet points, no Mar
 function p4c(){ return ctx4() + '\n\n' + p4(false); }
 
 function p5(){
-  const diag = has(S.diagramText) ? `\nTEXT DESCRIPTION OF THE DIAGRAM (from the team, use it to read the image correctly)\n${t(S.diagramText)}\n` : '';
+  const aud = isOn('audience');
+  const diag = has(S.diagramText) ? `TEXT DESCRIPTION OF THE DIAGRAM (from the team, use it to read the image correctly)\n${t(S.diagramText)}\n\n` : '';
+  const d = descBlock();
   return `ROLE
-You are a senior interaction designer and systems analyst. You turn an interaction (use-case) diagram into clear, end-to-end interaction flows.
+You are a senior interaction designer and systems analyst. You turn an interaction (use-case) diagram into clear, end-to-end interaction flows. The product may be software, a physical device, an artwork, an event, a research paper, a service or something else; describe interactions in terms that fit its type.
 
 INPUTS
-1. An IMAGE is attached. It is a hand-drawn interaction diagram of the product. Stick figures are actors (user types or outside systems). The large box is the system boundary. Ovals inside the box are use cases (goals). Lines connect actors to the use cases they take part in.
-2. The product description below.
-3. The intended user types below.
+1. An IMAGE is attached. It is a hand-drawn interaction diagram of the product. Stick figures are actors (groups of people such as users, attendees, readers, reviewers or vendors, or outside systems and organisations). The large box is the system boundary. Ovals inside the box are use cases (goals). Lines connect actors to the use cases they take part in.
+2. The project information below.
 
-PRODUCT DESCRIPTION
-${v(S.productDesc)}
+${projectBlock()}
 
-${usersBlock()}
-${diag}
-YOUR TASK
+${opt(d, d)}${opt(aud, audienceBlock())}${diag}YOUR TASK
 Step 1 — Read the diagram. Before the flows, write a section "## What I read in the diagram": list every actor and every use case you can see, and which actor connects to which use case. If any part of the image is unclear, say exactly what is unclear. Do not guess.
 
 Step 2 — Write the interaction flows. Write one flow for every connection between an actor and a use case in the diagram. Group the flows by actor. For each flow use this format:
 
 ### Flow <number>: <Actor> — <use case>
-One short paragraph (60-100 words) that describes the interaction end to end: what triggers it, what the actor does step by step, how the system responds at each step, any outside system involved, and the end state when the goal is met. End with one sentence on the most likely error or edge case and how the system handles it.
+One short paragraph (60-100 words) that describes the interaction end to end: what triggers it, what the actor does step by step, how the product (or the people running it) responds at each step, any outside system or organisation involved, and the end state when the goal is met. End with one sentence on the most likely error or edge case and how it is handled.
 
 Step 3 — Finish with:
 ## Gaps and inconsistencies
-Bullets for: use cases in the product description that are missing from the diagram, use cases in the diagram that the description does not support, and actors with no clear goal.
+Bullets for: use cases in the description that are missing from the diagram, use cases in the diagram that the description does not support, and actors with no clear goal.
 
 RULES
 - Target about 1,000 words in total for the flows.
 - Follow the diagram. Do not add actors or use cases that are not in the diagram or the description. If you think one is missing, list it under "Gaps and inconsistencies" instead.
-- Use plain, specific language. Describe what the user does and what the system does.
+- Use plain, specific language. Describe what each person does and what the product does.
 - Output Markdown only. No introduction and no closing remarks.`;
 }
 
 function p6(){
-  const reg = has(S.legal.regions) ? t(S.legal.regions) : '[not specified — cover the United States at federal level and note where state or international law may apply]';
-  const data = has(S.legal.data) ? t(S.legal.data) : '[not specified — infer from the product description and mark it as [ASSUMPTION]]';
+  const reg = has(S.legal.regions) ? t(S.legal.regions) : '[not specified — cover the United States at federal level and note where state or international rules may apply]';
+  const data = has(S.legal.data) ? t(S.legal.data) : '[not specified — infer from the project description and mark it as [ASSUMPTION]]';
+  const d = descBlock();
   return `ROLE
-You are a technology law and compliance analyst. You do a thorough first-pass review of the legal and regulatory requirements that a new digital product must meet. You do not give legal advice; you produce a well-sourced checklist that the team can take to a qualified professional.
+You are a law, compliance and ethics analyst. You do a thorough first-pass review of the legal, regulatory and ethical requirements that a new project must meet. The project may be software, a physical product, an artwork, an event, a research paper, a service or something else. You do not give legal advice; you produce a well-sourced checklist that the team can take to a qualified professional.
 
-PRODUCT DESCRIPTION
-${v(S.productDesc)}
+${projectBlock()}
 
-${usersBlock()}
-
-WHERE THE PRODUCT WILL BE USED
+${opt(d, d)}${opt(isOn('audience'), audienceBlock())}WHERE IT WILL BE USED, SOLD, HELD OR PUBLISHED
 ${reg}
 
-DATA THE PRODUCT WILL COLLECT OR USE
+DATA, MATERIALS AND PEOPLE INVOLVED
 ${data}
 
 YOUR TASK
-Check the product against every area below. For each area, decide if it applies. Do not skip an area; if it does not apply, say so in one line and give the reason.
-1. Data privacy and protection (for example FERPA for student records, COPPA if users may be under 13, CCPA/CPRA and other state privacy laws, GDPR if EU users are possible).
-2. Accessibility (ADA, Section 504/508, WCAG 2.1 / 2.2 Level AA, and any institutional accessibility policy).
-3. Security and data breach notification duties.
-4. Consumer protection and advertising (FTC rules, honest claims, dark patterns, subscriptions and auto-renewal).
-5. Payments and financial rules, if money moves through the product (PCI DSS and similar).
-6. Health, safety or wellbeing data (HIPAA and similar), if relevant.
-7. Artificial intelligence and automated decisions (transparency, bias, state and international AI laws), if the product uses AI.
-8. Intellectual property (copyright, trademarks for the product name, licences of third-party content, data and open-source code).
-9. User-generated content and moderation, terms of service and privacy policy requirements.
-10. Platform and partner rules (Apple App Store, Google Play, institutional IT and procurement policies, API terms of integrated services).
-11. Employment, labour or sector-specific rules, if the product touches them.
-12. Location data, communications and marketing rules (for example TCPA for SMS, CAN-SPAM for email).
+Check the project against every area below. For each area, decide if it applies to this type of project. Do not skip an area; if it does not apply, say so in one line and give the reason.
+1. Data privacy and protection (for example GDPR, CCPA/CPRA and other state privacy laws, FERPA for student records, COPPA if children under 13 may take part, and local equivalents).
+2. Accessibility (ADA, Section 504/508, WCAG 2.1 / 2.2 Level AA for digital parts, physical accessibility of venues and objects, institutional accessibility policies).
+3. Security, safety and incident duties (data security and breach notification; physical safety and risk assessment).
+4. Physical product safety, certification and labelling, if there is hardware (for example CE, FCC, UL, RoHS, battery and shipping rules, product liability).
+5. Events, venues and public spaces, if relevant (permits, licences, insurance, crowd safety, food and alcohol rules, noise, public-art approvals).
+6. Consumer protection and advertising (honest claims, dark patterns, refunds, subscriptions and auto-renewal).
+7. Payments, ticketing, fundraising and tax, if money moves (for example PCI DSS, sales tax, donation and sponsorship rules).
+8. Health, safety or wellbeing data (HIPAA and similar), if relevant.
+9. Artificial intelligence and automated decisions (transparency, bias, disclosure of AI-generated content, state and international AI laws), if AI is used.
+10. Intellectual property (copyright, moral rights, trademarks for the name, patents, licences for third-party content, music, images, data, fonts and open-source code).
+11. Research ethics and academic integrity, if there is research or human participants (IRB or ethics approval, informed consent, authorship, plagiarism, data availability, conflicts of interest).
+12. Participant and user agreements (terms of use, privacy notice, waivers and releases, photo and video consent, user-generated content and moderation).
+13. Platform, partner and institutional rules (app stores, venues, publishers and journals, galleries, university and funder policies, API terms of integrated services).
+14. Employment, volunteers, contractors and sector-specific rules, if relevant.
+15. Communications and marketing rules (for example TCPA for SMS, CAN-SPAM for email, rules for contacting minors).
 
 OUTPUT FORMAT (Markdown only)
 ## Summary
 3-5 bullets: the most important obligations and the highest risks.
 
 ## Requirements by area
-For each of the 12 areas, a heading followed by a Markdown table with the columns:
-Requirement / law | Why it applies to this product | What the team must do | Risk if ignored (High / Medium / Low) | Source (link)
+For each of the 15 areas, a heading followed by a Markdown table with the columns:
+Requirement / law / standard | Why it applies to this project | What the team must do | Risk if ignored (High / Medium / Low) | Source (link)
 
 ## Design implications
-Bullets of concrete product decisions these requirements force (for example "collect the minimum data", "add parental consent", "provide keyboard navigation").
+Bullets of concrete decisions these requirements force (for example "collect the minimum data", "add parental consent", "book a licensed venue", "get ethics approval before recruiting participants").
 
-## Questions for a legal or compliance expert
+## Questions for a legal, compliance or ethics expert
 Items that need a qualified professional to confirm.
 
 ## Disclaimer
 One sentence: this is not legal advice.
 
 RULES
-- Name real laws and standards. Do not invent laws, sections or cases. If you are unsure, say so.
-- Tie every requirement to a specific feature, user type or data item from the product description.
+- Name real laws, standards and policies. Do not invent laws, sections or cases. If you are unsure, say so.
+- Tie every requirement to a specific feature, activity, group of people or data item from the project.
 - Mark inferences with [ASSUMPTION].
 - No introduction and no closing remarks beyond the sections above.`;
 }
 
+function pCost(){
+  const d = descBlock();
+  const flows = isOn('interact') && has(S.interactions) ? 'INTERACTION FLOWS (what the product must do, which drives cost)\n' + t(S.interactions) : '';
+  const legal = isOn('legal') && has(S.legalOut) ? 'LEGAL, COMPLIANCE AND ETHICS FINDINGS (compliance work, permits, insurance and certification can add cost)\n' + t(S.legalOut) : '';
+  return `ROLE
+You are a cost analyst and budget planner. You research what things really cost and turn a team's rough list of cost sources into a realistic, sourced estimate. The project may be software, a physical product, an artwork, an event, a research paper, a service or something else. Use web search or browsing if you have it. If you cannot browse the web, say so in the first line and label every number you could not verify as [UNVERIFIED].
+
+${projectBlock()}
+
+${opt(d, d)}${opt(isOn('audience'), audienceBlock())}${opt(flows, flows)}${opt(legal, legal)}CORE COST SOURCES (identified by the team)
+${listBlock('costs','[no cost sources listed yet]')}
+
+SCALE AND TIMEFRAME
+${v(S.cost.scale,'[not specified — choose a realistic first version or first year, and state your choice as [ASSUMPTION]]')}
+
+CURRENCY AND REGION
+${v(S.cost.region,'[not specified — infer from the project and state it as [ASSUMPTION]]')}
+
+YOUR TASK
+Step 1 — For EACH cost source the team listed, write:
+### <number>. <Cost source>
+- **What it covers:** what exactly is paid for, and where the money goes (vendor, person, institution, platform).
+- **Where it comes in:** the point in the project when this cost appears (design, build, launch, each event, each month, publication, etc.).
+- **Type:** One-time / Recurring (state the period) / Per unit or per person.
+- **Cost drivers:** what makes this cost go up or down.
+- **Researched prices:** 2-4 real reference prices (vendor prices, rate cards, published fee schedules or comparable projects), each with a link.
+- **Estimate:** Low / Likely / High, with the arithmetic shown (for example 50 units × $12 = $600).
+- **Notes:** anything the team should know (minimum orders, lead times, student or non-profit discounts, free alternatives).
+
+Step 2 — ## Costs the team may have missed
+List realistic costs that are not in the team's list (for example insurance, permits, taxes and fees, shipping, maintenance, accessibility work, promotion, contingency). Give a short Low / Likely / High estimate and a source for each.
+
+Step 3 — ## Budget summary
+A Markdown table with the columns: Cost source | Type | Low | Likely | High | When it occurs | Main source.
+Then give totals for Low, Likely and High. Show one-time and recurring costs separately. Add a contingency of 10-15% to the Likely total and say which percentage you chose and why. State the currency.
+
+Step 4 — ## Ways to reduce cost
+3-6 concrete options (for example cheaper suppliers, free tiers, in-kind sponsorship, borrowing equipment, phasing the work), each with the likely saving.
+
+Step 5 — ## Assumptions and confidence
+What you assumed, which numbers are verified by a source, which are estimates, and the date your prices are current to.
+
+RULES
+- Do not invent prices, vendors or links. If you cannot find a real price, give a range, explain how you reached it, and mark it [ESTIMATE].
+- Show the arithmetic for every estimate.
+- Use one currency throughout.
+- Output Markdown only. No introduction and no closing remarks.`;
+}
+
+function pCollab(){
+  const d = descBlock();
+  const bg = isOn('background') && has(S.marketOut) ? 'BACKGROUND RESEARCH (existing work; the people and organisations behind it may be possible collaborators)\n' + t(S.marketOut) : '';
+  const cost = isOn('cost') && has(S.costOut) ? 'COST ESTIMATES (use these to target funding and in-kind support)\n' + t(S.costOut) : '';
+  return `ROLE
+You are a partnerships and funding scout. You find real people, groups, organisations and programmes that can help a project succeed, and you back every lead with evidence. The project may be software, a physical product, an artwork, an event, a research paper, a service or something else. Use web search or browsing; this task depends on it. If you cannot browse the web, say so in the first line and label every lead you could not verify as [UNVERIFIED].
+
+${projectBlock()}
+
+${opt(d, d)}${opt(isOn('audience'), audienceBlock())}${opt(bg, bg)}${opt(cost, cost)}HELP THE TEAM NEEDS MOST
+${v(S.collab.needs,'[not specified — infer the most important needs from the project and mark them [ASSUMPTION]]')}
+
+INITIAL SOURCES OF HELP (identified by the team)
+${listBlock('collabs','[no sources listed yet]')}
+
+YOUR TASK
+Step 1 — ## Check the team's sources
+For EACH initial source above: confirm it is real and relevant (with a link), say exactly what help it could give, name the best person, office or channel to approach, and give one concrete next step. If a source is vague (for example "a professor"), suggest specific matching people or groups.
+
+Step 2 — ## New leads
+Find 8-15 more concrete leads. Cover the categories that fit this project:
+- Mentors and experts (named people with relevant public work)
+- Academic departments, labs and research groups
+- Communities, clubs, societies and online groups
+- Industry partners, suppliers and sponsors (including in-kind support)
+- Grants, competitions, fellowships, accelerators and other funding
+- Venues, platforms, publishers, galleries and distribution channels
+For EACH lead, use this structure:
+### <number>. <Name>
+- **Category:**
+- **Link:**
+- **Why it is relevant:** tie it to a specific need or part of this project.
+- **What to ask for:** the specific help (advice, money, space, equipment, data, introductions, an audience).
+- **How to reach them:** a public contact route (application page, office, public email, event, community channel).
+- **Deadlines or eligibility:** if any, with dates.
+- **Evidence:** what shows this lead is real, active and a good fit (for example a past project, a funded award, a recent post).
+
+Step 3 — ## Prioritised outreach plan
+A Markdown table with the columns: Lead | What to ask for | Effort (Low / Medium / High) | Likelihood of help (Low / Medium / High) | First step | When.
+Order it so the quickest, most likely wins come first.
+
+Step 4 — ## Outreach message template
+One short message (under 120 words) the team can adapt for the top leads. Use [placeholders] for names and details.
+
+Step 5 — ## Evidence quality
+Separate verified leads from ones you could not fully confirm, and note the date your information is current to.
+
+RULES
+- Do not invent people, organisations, programmes, email addresses or deadlines.
+- Use only public contact routes. Do not guess private email addresses.
+- Flag deadlines that may have passed and programmes that may have closed.
+- Output Markdown only. No introduction and no closing remarks.`;
+}
+
+function finalSections(){
+  const s = [{title:'ORIGINAL IDEA', author:'team', about:'the idea as the team first wrote it, before any research. Use it to see how the idea changed.', body:projectBlock()}];
+  if(isOn('audience')){
+    s.push({title:'INTENDED AUDIENCE', author:'team', about:`the ${validRows('users').length} audience groups the team identified. These are the only audience groups of the product.`, body:audienceBlock()});
+    s.push({title:'AUDIENCE STORIES', author:'AI, reviewed by team', about:'for each audience group, what they expect, how they would experience the product, how it should work for them, and acceptance criteria.', body:v(S.stories)});
+  }
+  if(isOn('background')) s.push({title:'BACKGROUND RESEARCH (EXISTING WORK)', author:'AI, reviewed by team', about:'existing work similar to this idea: core features, cost or access model and differentiators.', body:v(S.marketOut)});
+  if(isOn('problems')) s.push({title:'PROBLEMS IN EXISTING WORK AND GAPS', author:'AI, reviewed by team', about:'problems people report with existing work, cross-cutting patterns, unmet needs and gaps.', body:v(S.problemsOut)});
+  if(isOn('diff')){
+    s.push({title:'DIFFERENTIATION DECISIONS AND REFRAMED IDEA', author:'team', about:'the team\'s own decisions after the research. These have the highest priority.',
+      body:`What the product will do differently from existing work:\n${v(S.diff.different)}\n\nProblems or gaps in existing work that it will address:\n${v(S.diff.solves)}\n\nReframed idea:\n${v(S.diff.reframed)}`});
+    s.push({title:'PRODUCT DESCRIPTION (~500 WORDS, SIMPLIFIED TECHNICAL ENGLISH)', author:'AI from team decisions, reviewed by team', about:'the agreed, current description of the product. Treat it as the main reference for what the product is.', body:v(S.productDesc)});
+  }
+  if(isOn('interact')) s.push({title:'INTERACTION FLOWS', author:'AI from the team\'s diagram, reviewed by team', about:'end-to-end flows for each actor and use case, based on the team\'s hand-drawn interaction diagram.',
+    body:(has(S.diagramText) ? 'Team description of the interaction diagram:\n' + t(S.diagramText) + '\n\n' : '') + v(S.interactions)});
+  if(isOn('legal')) s.push({title:'LEGAL, COMPLIANCE AND ETHICS REQUIREMENTS', author:'AI, reviewed by team — not legal advice', about:'laws, standards, permits and ethics rules the project may need to follow. This is a first-pass checklist, not legal advice.',
+    body:`Where it will be used, sold, held or published: ${v(S.legal.regions,'[not specified]')}\nData, materials and people involved: ${v(S.legal.data,'[not specified]')}\n\n${v(S.legalOut)}`});
+  if(isOn('cost')) s.push({title:'COST SOURCES AND ESTIMATES', author:'team list + AI research, reviewed by team', about:'the core cost sources the team identified, followed by researched estimates and a budget.',
+    body:`Core cost sources (team):\n${listBlock('costs','[none listed]')}\n\nScale and timeframe: ${v(S.cost.scale,'[not specified]')}\nCurrency and region: ${v(S.cost.region,'[not specified]')}\n\nResearched estimates and budget:\n${v(S.costOut)}`});
+  if(isOn('collab')) s.push({title:'COLLABORATION AND SUPPORT', author:'team list + AI research, reviewed by team', about:'sources of help the team identified, followed by checked and new leads for mentors, partners, communities and funding.',
+    body:`Help the team needs most: ${v(S.collab.needs,'[not specified]')}\n\nInitial sources of help (team):\n${listBlock('collabs','[none listed]')}\n\nResearched leads and outreach plan:\n${v(S.collabOut)}`});
+  return s;
+}
+
 function ctx7(){
-  const us = validUsers();
+  const secs = finalSections();
+  const n = secs.length;
+  const prio = isOn('diff') ? ' The team\'s differentiation decisions and the agreed product description have the highest priority. Where sections conflict, later sections are more current than earlier ones.' : ' Where sections conflict, later sections are more current than earlier ones.';
   return `PRODUCT CONTEXT FILE — ${productName()}
 Generated: ${today()} by the Design Thinking Prompt Builder
+Project type: ${typeLabel()}
 
 HOW TO READ THIS FILE
-This file contains the complete design-thinking record for one product idea. It has 9 sections, in the order the team created them. Each section starts with a short note that explains what it contains and who wrote it. Sections written by the team are the team's decisions. Sections produced by an AI model were reviewed by the team, but may still contain unverified claims. Where sections conflict, the later sections (6 to 9) are more current than the earlier ones.
+This file contains the complete design-thinking record for one project. "The product" means whatever the team is creating (software, a physical device, an artwork, an event, a research paper, a service or something else). The file has ${n} section${n===1?'':'s'}, in the order the team created them. Each section starts with a short note that explains what it contains and who wrote it. Sections written by the team are the team's decisions. Sections produced by an AI model were reviewed by the team, but may still contain unverified claims.${prio}
+${skippedLine(OPTIONAL)}
 
 SECTIONS
-1. Original idea (team)
-2. Intended users (team)
-3. User stories (AI, reviewed by team)
-4. Competitor / market research (AI, reviewed by team)
-5. Problems in existing products and market gaps (AI, reviewed by team)
-6. Differentiation decisions and reframed idea (team)
-7. Product description, ~500 words (AI from team decisions, reviewed by team)
-8. Interaction flows (AI from the team's interaction diagram, reviewed by team)
-9. Legal and compliance requirements (AI, reviewed by team — not legal advice)
+${secs.map((s,i)=>`${i+1}. ${s.title.charAt(0)+s.title.slice(1).toLowerCase()} (${s.author})`).join('\n')}
 
-${HR}
-SECTION 1 — ORIGINAL IDEA
-About this section: the idea as the team first wrote it, before any research. Use it to see how the idea changed.
-${hr}
-${ideaBlock()}
-
-${HR}
-SECTION 2 — INTENDED USERS
-About this section: the ${us.length} user types the team identified. These are the only user types of the product.
-${hr}
-${usersBlock()}
-
-${HR}
-SECTION 3 — USER STORIES
-About this section: for each user type, what they expect, how they would use the product, how it should function for them, and acceptance criteria.
-${hr}
-${v(S.stories)}
-
-${HR}
-SECTION 4 — COMPETITOR / MARKET RESEARCH
-About this section: existing companies and products with similar offerings, their core features, pricing and differentiators.
-${hr}
-${v(S.marketOut)}
-
-${HR}
-SECTION 5 — PROBLEMS IN EXISTING PRODUCTS AND MARKET GAPS
-About this section: problems real users report with each competitor, patterns across products, unmet needs and market gaps.
-${hr}
-${v(S.problemsOut)}
-
-${HR}
-SECTION 6 — DIFFERENTIATION DECISIONS AND REFRAMED IDEA
-About this section: the team's own decisions after the research. These have the highest priority.
-${hr}
-What the product will do differently from competitors:
-${v(S.diff.different)}
-
-Problems in existing products that this product will solve:
-${v(S.diff.solves)}
-
-Reframed product idea:
-${v(S.diff.reframed)}
-
-${HR}
-SECTION 7 — PRODUCT DESCRIPTION (~500 WORDS, SIMPLIFIED TECHNICAL ENGLISH)
-About this section: the agreed, current description of the product. Treat it as the main reference for what the product is.
-${hr}
-${v(S.productDesc)}
-
-${HR}
-SECTION 8 — INTERACTION FLOWS
-About this section: end-to-end flows for each actor and use case, based on the team's hand-drawn interaction diagram.
-${hr}
-${has(S.diagramText) ? 'Team description of the interaction diagram:\n' + t(S.diagramText) + '\n\n' : ''}${v(S.interactions)}
-
-${HR}
-SECTION 9 — LEGAL AND COMPLIANCE REQUIREMENTS
-About this section: laws, standards and policies the product may need to follow. This is a first-pass checklist, not legal advice.
-${hr}
-Where the product will be used: ${v(S.legal.regions,'[not specified]')}
-Data the product will collect or use: ${v(S.legal.data,'[not specified]')}
-
-${v(S.legalOut)}
+${renderSections(secs)}
 
 ${HR}
 END OF CONTEXT FILE
@@ -1066,78 +1391,125 @@ END OF CONTEXT FILE
 
 function p7(attached=true){
   const src = attached ? 'the attached file context.txt' : 'the PRODUCT CONTEXT FILE included above';
+  const name = productName();
+  const n = finalSections().length;
+  const aud = isOn('audience'), bg = isOn('background');
+  const docSecs = [];
+  docSecs.push('**Executive summary** — one paragraph (max 120 words): what it is, who it is for, the problem or need, and why it is different.');
+  docSecs.push(`**Problem statement** — the problem or need, who has it, how they deal with it today, and why current options fall short.${bg ? ' Cite the evidence from the research.' : ''}`);
+  if(aud){
+    docSecs.push('**Audience** — one short profile per audience group: goals, needs, frustrations, and what success means to them.');
+    docSecs.push('**Key audience stories** — the most important 2-3 stories per audience group, with acceptance criteria.');
+  }
+  if(bg) docSecs.push('**Background and existing work** — a compact comparison table of the main alternatives and substitutes, and 3-5 bullets of key takeaways.');
+  if(isOn('problems') || isOn('diff')) docSecs.push('**Gap and differentiation** — the gap the product fills, its value proposition, and what it will deliberately NOT do.');
+  docSecs.push(`**Vision and description** — ${isOn('diff') ? 'the agreed product description, refined but not changed in meaning' : 'a clear description of the product, based on the idea and the context'}.`);
+  docSecs.push(`**Core features or components** — a table: Feature / component | Description | ${aud ? 'Audience group(s) served' : 'Who it serves'} | Problem it solves | Priority (Must / Should / Could / Won't, for the first version).`);
+  if(isOn('interact')) docSecs.push('**Interaction flows** — the main end-to-end flows, summarised per actor.');
+  docSecs.push('**Requirements: what it must do** — numbered, testable statements ("The product shall ..."), written in terms that fit the project type.');
+  docSecs.push('**Requirements: qualities it must have** — choose the ones that fit the project type, for example accessibility, privacy, safety, quality, durability, reliability, usability, rigour, format.');
+  if(isOn('legal')) docSecs.push('**Legal, compliance and ethics** — the requirements that apply and how the design addresses each one.');
+  if(isOn('cost')) docSecs.push('**Cost and budget** — a budget table (Cost source | Type | Low | Likely | High | When it occurs), totals with contingency, the biggest cost risks and how to reduce them.');
+  if(isOn('collab')) docSecs.push('**Collaboration and support plan** — the most promising mentors, partners, communities and funders, what to ask each for, and the outreach steps.');
+  docSecs.push(`**Success metrics** — how the team will know the product works: 4-6 measurable criteria, each linked to a${aud ? 'n audience' : ''} need.`);
+  docSecs.push('**Assumptions, risks and open questions** — a table: Item | Type (Assumption / Risk / Question) | Impact | How to test or reduce it.');
+  docSecs.push(`**Next steps** — the next 3-5 actions, starting with the smallest test the team can run with real ${aud ? 'audience members' : 'people'}.`);
   return `ROLE
-You are a senior product manager. You write product description documents that are concise, complete and easy to act on. You write for a mixed audience: team members, faculty or stakeholders, designers and developers.
+You are a senior product and project lead. You write project description documents that are concise, complete and easy to act on. You write for a mixed audience: team members, faculty or stakeholders, collaborators and funders. The product here is a ${typeLabel()} project; use terms that fit it.
 
 INPUT
-Read ${src} completely before you write. It is the full design-thinking record for the product "${productName()}". It has 9 sections: original idea, users, user stories, market research, problems and gaps, the team's differentiation decisions, a 500-word product description, interaction flows, and legal requirements. The file explains which sections have priority.
+Read ${src} completely before you write. It is the full design-thinking record for "${name}". It has ${n} section${n===1?'':'s'}: ${finalSections().map(s=>s.title.toLowerCase()).join('; ')}. The file explains which sections have priority, and which sections the team skipped on purpose.
+
+WHERE TO WRITE
+Use the canvas to draft the document. If your interface has a canvas, artifact or document editor, write the complete document there so the team can read and edit it interactively. If it does not, write the document as Markdown in your reply.
 
 YOUR TASK
-Write a Product Description Document for "${productName()}". Use exactly these sections, in this order:
+Write a Project Description Document for "${name}". Use exactly these sections, in this order:
 
-# ${productName()} — Product Description Document
+# ${name} — Project Description Document
 
-1. **Executive summary** — one paragraph (max 120 words): what the product is, for whom, the problem, and why it is different.
-2. **Problem statement** — the problem, who has it, how they deal with it today, and why current solutions fail. Cite the evidence from the research.
-3. **Target users** — one short profile per user type: goals, needs, frustrations, and what success means to them.
-4. **Key user stories** — the most important 2-3 stories per user type, with acceptance criteria.
-5. **Market landscape** — a compact comparison table of the main competitors and substitutes, and 3-5 bullets of key takeaways.
-6. **Market gap and differentiation** — the gap the product fills, its value proposition, and what it will deliberately NOT do.
-7. **Product vision and description** — the agreed product description, refined but not changed in meaning.
-8. **Core features** — a table: Feature | Description | User type(s) served | Problem it solves | Priority (Must / Should / Could / Won't, for the first version).
-9. **Interaction flows** — the main end-to-end flows, summarised per actor.
-10. **Functional requirements** — numbered, testable statements ("The system shall ...").
-11. **Non-functional requirements** — accessibility, privacy, security, performance, reliability, usability, platform.
-12. **Legal and compliance** — the requirements that apply and how the design addresses each one.
-13. **Success metrics** — how the team will know the product works: 4-6 measurable criteria, each linked to a user need.
-14. **Assumptions, risks and open questions** — a table: Item | Type (Assumption / Risk / Question) | Impact | How to test or reduce it.
-15. **Next steps** — the next 3-5 actions, starting with the smallest test the team can run with real users.
+${docSecs.map((d,i)=>`${i+1}. ${d}`).join('\n')}
 
 RULES
-- Use only information in the context file. Do not invent features, users, data, competitors or numbers.
-- The team's decisions (sections 6 and 7 of the context) have priority over earlier research.
-- Where the context is missing information that a section needs, write "[GAP: ...]" and state what is missing, instead of making it up.
+- Use only information in the context file. Do not invent features, people, data, sources, costs, partners or numbers.
+${isOn('diff') ? '- The team\'s decisions (the differentiation decisions and the agreed product description) have priority over earlier research.\n' : ''}- Do not add sections for topics the team skipped on purpose. Where a section above needs information the context does not have, write "[GAP: ...]" and state what is missing, instead of making it up.
 - Mark claims that come from unverified research as [UNVERIFIED].
 - Be concise but complete: short paragraphs, tables and bullets where they help. Aim for roughly 2,500-4,000 words.
 - Use clear, plain English. No marketing language.
-- Output Markdown only. No introduction and no closing remarks outside the document.`;
+- No introduction and no closing remarks outside the document.`;
 }
 function p7c(){ return ctx7() + '\n\n' + p7(false); }
 
-const BUILDERS = {p1, p2, p3, ctx4, p4:()=>p4(true), p4c, p5, p6, ctx7, p7:()=>p7(true), p7c};
+const BUILDERS = {p1, p2, p3, ctx4, p4:()=>p4(true), p4c, p5, p6, pCost, pCollab, ctx7, p7:()=>p7(true), p7c};
 
-/* ================= MISSING-INPUT CHECKS ================= */
-function missingFor(stage){
+/* ================= MISSING-INPUT CHECKS (only for selected stages) ================= */
+function missingFor(id){
   const m = [];
+  const need = (dep, ok, msg) => { if(isOn(dep) && !ok) m.push(`${stageRef(dep)}: ${msg}`); };
   const ideaOk = has(S.idea.title) && has(S.idea.summary);
-  if(stage>=1 && stage<=3 && !ideaOk) m.push('Stage 0: add a working name and a one-sentence idea.');
-  if(stage===1 || stage===2){ const n = validUsers().length; if(n<3) m.push(`Stage 1: name at least 3 users (you have ${n}).`); }
-  if(stage===1){ const nd = validUsers().filter(u=>!has(u.desc)).length; if(nd) m.push(`${nd} user(s) have no description. A short description makes the stories much better.`); }
-  if(stage===3 && !has(S.marketOut)) m.push('Stage 2: paste the market research. This prompt depends on it.');
-  if(stage===4){
-    if(!has(S.stories)) m.push('Stage 1: user stories are empty.');
-    if(!has(S.marketOut)) m.push('Stage 2: market research is empty.');
-    if(!has(S.problemsOut)) m.push('Stage 3: problem research is empty.');
-    if(!has(S.diff.different)) m.push('Step 1: say what your product does differently.');
-    if(!has(S.diff.solves)) m.push('Step 1: say which problems it solves.');
-    if(!has(S.diff.reframed)) m.push('Step 1: write your reframed idea.');
-  }
-  if((stage===5 || stage===6) && !has(S.productDesc)) m.push('Stage 4: paste the 500-word product description. This prompt depends on it.');
-  if(stage===7){
-    COMPLETE.forEach((c,i)=>{ if(i<7 && !c.ok()) m.push(`Stage ${i}: ${c.miss}`); });
+  if(id!=='doc' && !ideaOk) m.push(`${stageRef('idea')}: add a working name and a one-sentence idea.`);
+  if(id!=='doc' && !S.projectType) m.push(`${stageRef('idea')}: choose a project type so the prompt uses the right terms.`);
+  const nUsers = validRows('users').length;
+  switch(id){
+    case 'audience': {
+      if(nUsers<3) m.push(`Step 1: name at least 3 audience groups (you have ${nUsers}).`);
+      const nd = validRows('users').filter(u=>!has(u.desc)).length;
+      if(nd) m.push(`${nd} group(s) have no description. A short description makes the stories much better.`);
+      break;
+    }
+    case 'background':
+      need('audience', nUsers>=3, `name at least 3 audience groups (you have ${nUsers}).`);
+      break;
+    case 'problems':
+      need('background', has(S.marketOut), 'paste the background research. This prompt depends on it.');
+      break;
+    case 'diff':
+      need('audience', has(S.stories), 'audience stories are empty.');
+      need('background', has(S.marketOut), 'background research is empty.');
+      need('problems', has(S.problemsOut), 'problem research is empty.');
+      if(!has(S.diff.different)) m.push('Step 1: say what your project does differently.');
+      if(!has(S.diff.solves)) m.push('Step 1: say which problems or gaps it addresses.');
+      if(!has(S.diff.reframed)) m.push('Step 1: write your reframed idea.');
+      break;
+    case 'interact':
+    case 'legal':
+      need('diff', has(S.productDesc), 'paste the 500-word description. This prompt depends on it.');
+      break;
+    case 'cost': {
+      const n = validRows('costs').length;
+      if(n<4) m.push(`Step 1: list at least 4–5 core cost sources (you have ${n}).`);
+      const nd = validRows('costs').filter(r=>!has(r.desc)).length;
+      if(nd) m.push(`${nd} cost source(s) have no description. Say what it is, where the money goes and where it comes in.`);
+      need('diff', has(S.productDesc), 'the 500-word description is empty, so estimates will be rougher.');
+      break;
+    }
+    case 'collab': {
+      const n = validRows('collabs').length;
+      if(n<3) m.push(`Step 1: list at least 3 initial sources of help (you have ${n}).`);
+      need('diff', has(S.productDesc), 'the 500-word description is empty, so leads will be less targeted.');
+      need('cost', has(S.costOut), 'cost estimates are empty, so funding leads will be less targeted.');
+      break;
+    }
+    case 'doc':
+      flow().forEach(s=>{ if(s.id!=='doc' && !s.ok()) m.push(`${stageRef(s.id)}: ${s.miss}`); });
+      break;
   }
   return m;
 }
-const COMPLETE = [
-  {label:'Original idea',       ok:()=>has(S.idea.title)&&has(S.idea.summary), miss:'idea name or one-sentence idea is missing.'},
-  {label:'Users & user stories',ok:()=>validUsers().length>=3 && has(S.stories), miss:'need 3+ users and pasted user stories.'},
-  {label:'Market research',     ok:()=>has(S.marketOut), miss:'market research not pasted.'},
-  {label:'Problems & gaps',     ok:()=>has(S.problemsOut), miss:'problem research not pasted.'},
-  {label:'Differentiation + 500-word description', ok:()=>has(S.diff.different)&&has(S.diff.solves)&&has(S.diff.reframed)&&has(S.productDesc), miss:'differentiation fields or product description missing.'},
-  {label:'Interaction flows',   ok:()=>has(S.interactions), miss:'interaction flows not pasted.'},
-  {label:'Legal requirements',  ok:()=>has(S.legalOut), miss:'legal review not pasted.'},
-  {label:'Compiled',            ok:()=>COMPLETE.slice(0,7).every(c=>c.ok()), miss:''}
-];
+
+/* ================= SECTION SELECTION ================= */
+function setPick(id, on){
+  const st = byId(id); if(!st || st.required) return;
+  S.selected[id] = on;
+  const notes = [];
+  if(on){
+    (HARD[id]||[]).forEach(d=>{ if(!S.selected[d]){ S.selected[d]=true; notes.push(`${byId(d).title} was added too, because ${st.title} needs it.`); } });
+  } else {
+    Object.keys(HARD).forEach(k=>{ if(HARD[k].includes(id) && S.selected[k]){ S.selected[k]=false; notes.push(`${byId(k).title} was removed too, because it needs ${st.title}.`); } });
+  }
+  save(); refresh();
+  toast(notes.length ? notes.join(' ') : `${st.title} ${on ? 'added to' : 'removed from'} your flow`);
+}
 
 /* ================= RENDER ================= */
 function renderTabs(){
@@ -1145,32 +1517,54 @@ function renderTabs(){
   STAGES.forEach((s,i)=>{
     const li = document.createElement('li');
     const b = document.createElement('button');
-    b.className='tab'; b.type='button'; b.setAttribute('role','tab'); b.dataset.go=i;
+    b.className='tab'; b.type='button'; b.setAttribute('role','tab'); b.dataset.go=s.id;
     b.innerHTML = `<span class="num">${i}</span><span class="lbl"><b></b><small></small></span>`;
     b.querySelector('b').textContent = s.title;
-    b.querySelector('small').textContent = s.sub;
     li.appendChild(b); ul.appendChild(li);
   });
 }
 
-function renderUsers(){
-  const box = $('#userList'); box.innerHTML='';
-  S.users.forEach((u,i)=>{
-    const row = document.createElement('div'); row.className='user-row';
-    const idx = document.createElement('div'); idx.className='idx'; idx.textContent=i+1;
-    const name = document.createElement('input'); name.type='text'; name.placeholder = ['e.g. Commuter freshman','e.g. International first-year student','e.g. Academic advisor','e.g. Resident advisor'][i] || 'User type';
-    name.value=u.name; name.dataset.user=i; name.dataset.field='name'; name.setAttribute('aria-label',`User ${i+1} name`);
-    const desc = document.createElement('textarea'); desc.placeholder='Who are they? What is their day like? What do they struggle with?';
-    desc.value=u.desc; desc.dataset.user=i; desc.dataset.field='desc'; desc.rows=2; desc.setAttribute('aria-label',`User ${i+1} description`);
-    const rm = document.createElement('button'); rm.className='icon-btn'; rm.type='button'; rm.title='Remove user'; rm.setAttribute('aria-label',`Remove user ${i+1}`); rm.textContent='×';
-    rm.disabled = S.users.length<=3; if(rm.disabled) rm.style.visibility='hidden';
-    rm.addEventListener('click',()=>{ S.users.splice(i,1); save(); renderUsers(); refresh(); });
-    row.append(idx,name,desc,rm); box.appendChild(row);
+function renderPickList(){
+  const box = $('#pickList'); box.innerHTML='';
+  STAGES.forEach((s,i)=>{
+    const lab = document.createElement('label');
+    lab.className = 'pick-item' + (s.required ? ' locked' : '');
+    const cb = document.createElement('input'); cb.type='checkbox';
+    if(s.required){ cb.checked = true; cb.disabled = true; } else { cb.dataset.pick = s.id; }
+    const txt = document.createElement('span');
+    const b = document.createElement('b'); b.textContent = `${i} · ${s.title}`;
+    const sm = document.createElement('small'); sm.textContent = s.required ? (s.id==='idea' ? 'Always included: where every project starts.' : 'Always included: compiles everything you selected.') : s.pick;
+    txt.append(b, sm); lab.append(cb, txt); box.appendChild(lab);
   });
 }
 
+function renderList(key){
+  const L = LISTS[key], box = $(L.box); box.innerHTML='';
+  S[key].forEach((r,i)=>{
+    const rowEl = document.createElement('div'); rowEl.className='row-item';
+    const n = document.createElement('div'); n.className='idx'; n.textContent=i+1;
+    const name = document.createElement('input'); name.type='text';
+    name.placeholder = L.names[i] || L.noun;
+    name.value = r.name; name.dataset.list=key; name.dataset.i=i; name.dataset.field='name'; name.setAttribute('aria-label',`${L.noun} ${i+1} name`);
+    const desc = document.createElement('textarea'); desc.placeholder = L.desc; desc.rows=2;
+    desc.value = r.desc; desc.dataset.list=key; desc.dataset.i=i; desc.dataset.field='desc'; desc.setAttribute('aria-label',`${L.noun} ${i+1} description`);
+    const rm = document.createElement('button'); rm.className='icon-btn'; rm.type='button'; rm.title='Remove'; rm.setAttribute('aria-label',`Remove ${L.noun.toLowerCase()} ${i+1}`); rm.textContent='×';
+    rm.disabled = S[key].length <= L.min; if(rm.disabled) rm.style.visibility='hidden';
+    rm.addEventListener('click',()=>{ S[key].splice(i,1); save(); renderList(key); refresh(); });
+    rowEl.append(n,name,desc,rm); box.appendChild(rowEl);
+  });
+}
+const renderAllLists = () => Object.keys(LISTS).forEach(renderList);
+
 function fillInputs(){
   $$('[data-key]').forEach(el=>{ el.value = getPath(el.dataset.key) ?? ''; });
+}
+
+function navBtn(target, dir){
+  const b = document.createElement('button'); b.type='button'; b.dataset.go = target.id;
+  b.className = dir==='next' ? 'btn primary' : 'btn';
+  b.textContent = dir==='next' ? `Next: ${target.title} →` : `← ${target.title}`;
+  return b;
 }
 
 function refresh(){
@@ -1183,33 +1577,83 @@ function refresh(){
   });
   // missing
   $$('[data-missing]').forEach(el=>{
-    const m = missingFor(+el.dataset.missing);
+    const id = el.dataset.missing;
+    if(!isOn(id)){ el.innerHTML = '<div class="warn">This section is not in your flow, so it is skipped and not checked.</div>'; return; }
+    const m = missingFor(id);
     if(!m.length){ el.innerHTML = '<div class="okbox">✓ All the inputs this prompt needs are filled in.</div>'; return; }
-    el.innerHTML = '<div class="warn"><b>This prompt will be weaker because:</b><ul></ul></div>';
+    el.innerHTML = `<div class="warn"><b>${id==='doc' ? 'Your document will be weaker because:' : 'This prompt will be weaker because:'}</b><ul></ul></div>`;
     const ul = el.querySelector('ul'); m.forEach(x=>{ const li=document.createElement('li'); li.textContent=x; ul.appendChild(li); });
   });
   // tabs & progress
-  let done=0;
-  $$('.tab').forEach((b,i)=>{ const ok = COMPLETE[i].ok(); b.classList.toggle('done',ok); if(ok) done++; b.setAttribute('aria-selected', String(i===S.stage)); });
-  $('#progressBar').style.width = (done/8*100)+'%';
-  $('#progressLabel').textContent = `${done} of 8 stages complete`;
+  const fl = flow(); let done = 0;
+  $$('.tab').forEach(b=>{
+    const s = byId(b.dataset.go), on = isOn(s.id), ok = on && s.ok();
+    b.classList.toggle('off', !on); b.classList.toggle('done', ok); if(ok) done++;
+    b.querySelector('small').textContent = on ? s.sub : 'Skipped · not in your flow';
+    b.setAttribute('aria-selected', String(s.id===S.stage));
+  });
+  $('#progressBar').style.width = (done/fl.length*100)+'%';
+  $('#progressLabel').textContent = `${done} of ${fl.length} selected sections complete`;
+  // picker
+  $$('[data-pick]').forEach(cb=>{ cb.checked = isOn(cb.dataset.pick); });
+  $$('.pick-item').forEach(lab=>{ lab.classList.toggle('on', lab.querySelector('input').checked); });
+  $('#typeOtherWrap').style.visibility = S.projectType==='other' ? 'visible' : 'hidden';
+  // per-stage flow controls
+  $$('.stage').forEach(sec=>{
+    const id = sec.dataset.stage, st = byId(id), on = isOn(id);
+    sec.classList.toggle('off', !on);
+    const ctl = sec.querySelector('[data-flow]'); if(!ctl) return;
+    ctl.innerHTML = '';
+    if(st.required) return;
+    if(!on){
+      const ban = document.createElement('div'); ban.className='off-banner';
+      const msg = document.createElement('span');
+      msg.innerHTML = '<b>Not in your flow.</b> This section is skipped. It does not count toward progress or warnings, and it is not included in the final document.';
+      const b = document.createElement('button'); b.type='button'; b.className='btn sm primary'; b.dataset.pickOn=id; b.textContent='Add to flow';
+      ban.append(msg,b); ctl.appendChild(ban);
+    } else {
+      const b = document.createElement('button'); b.type='button'; b.className='btn sm ghost'; b.dataset.pickOff=id; b.textContent='Remove from flow';
+      b.title = 'Skip this section for your project'; ctl.appendChild(b);
+    }
+  });
+  // nav
+  $$('[data-nav]').forEach(nav=>{
+    const id = nav.dataset.nav; nav.innerHTML='';
+    const p = prevOn(id), n = nextOn(id);
+    nav.appendChild(p ? navBtn(p,'prev') : document.createElement('span'));
+    nav.appendChild(n ? navBtn(n,'next') : document.createElement('span'));
+  });
   // summary
   const sl = $('#summaryList'); sl.innerHTML='';
-  COMPLETE.slice(0,7).forEach(c=>{ const d=document.createElement('div'); d.className='summary-item'+(c.ok()?' ok':''); d.innerHTML='<span class="dot"></span><span></span>'; d.lastChild.textContent=c.label; sl.appendChild(d); });
+  fl.filter(s=>s.id!=='doc').forEach(s=>{
+    const d=document.createElement('div'); d.className='summary-item'+(s.ok()?' ok':'');
+    d.innerHTML='<span class="dot"></span><span></span>'; d.lastChild.textContent=`${idx(s.id)} · ${s.title}`; sl.appendChild(d);
+  });
+  const skipped = OPTIONAL.filter(id=>!isOn(id)).map(id=>byId(id).title);
+  $('#skippedNote').textContent = skipped.length ? `Skipped on purpose (not included): ${skipped.join(', ')}.` : '';
+  // reflect
+  const rl = $('#reflectList'); rl.innerHTML='';
+  [
+    isOn('diff') ? 'What was unclear in your first idea? Compare Stage 0 with your reframed idea in Stage 4.' : 'What was unclear in your first idea? How would you describe it now?',
+    'Which more precise description changed the AI\'s output the most?',
+    isOn('cost') ? 'Is the budget realistic for what you have? What would you cut first?' : '',
+    isOn('collab') ? 'Who is the first person or group you will contact this week?' : '',
+    `What is still an assumption? What is the next small test you could run with real ${isOn('audience') ? 'audience members' : 'people'}?`
+  ].filter(Boolean).forEach(x=>{ const li=document.createElement('li'); li.textContent=x; rl.appendChild(li); });
 }
 
-function showStage(n){
-  n = Math.max(0, Math.min(7, +n||0));
-  S.stage = n; save();
-  $$('.stage').forEach(s=>s.classList.toggle('active', +s.dataset.stage===n));
-  $$('.tab').forEach((b,i)=>b.setAttribute('aria-selected', String(i===n)));
-  const active = $(`.tab[data-go="${n}"]`); if(active && active.scrollIntoView && window.innerWidth<=900) active.scrollIntoView({inline:'center',block:'nearest'});
+function showStage(id){
+  if(!byId(id)) id = 'idea';
+  S.stage = id; save();
+  $$('.stage').forEach(s=>s.classList.toggle('active', s.dataset.stage===id));
+  $$('.tab').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.go===id)));
+  const active = $(`.tab[data-go="${id}"]`); if(active && active.scrollIntoView && window.innerWidth<=900) active.scrollIntoView({inline:'center',block:'nearest'});
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 /* ================= ACTIONS ================= */
 let toastTimer;
-function toast(msg){ const el=$('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),1800); }
+function toast(msg){ const el=$('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'), Math.max(1800, msg.length*45)); }
 
 async function copyText(text){
   try{ await navigator.clipboard.writeText(text); return true; }
@@ -1230,45 +1674,56 @@ function exportProject(){
   toast('Checkpoint saved');
 }
 function importProject(){ $('#importFile').value=''; $('#importFile').click(); }
+function rerender(){ fillInputs(); renderAllLists(); refresh(); showStage(S.stage); }
 function resetProject(){
   if(!confirm('Start a new project? This clears everything in this browser. Save a checkpoint first if you want to keep it.')) return;
-  S = blank(); save(); fillInputs(); renderUsers(); refresh(); showStage(0); toast('New project started');
+  S = blank(); save(); rerender(); showStage('idea'); toast('New project started');
 }
 
 /* ================= EVENTS ================= */
 document.addEventListener('input', e=>{
   const el = e.target;
   if(el.dataset.key){ setPath(el.dataset.key, el.value); }
-  else if(el.dataset.user!==undefined){ S.users[+el.dataset.user][el.dataset.field] = el.value; }
+  else if(el.dataset.list){ S[el.dataset.list][+el.dataset.i][el.dataset.field] = el.value; }
   else return;
   save(); refresh();
 });
+document.addEventListener('change', e=>{
+  const el = e.target;
+  if(el.dataset.pick) setPick(el.dataset.pick, el.checked);
+});
 document.addEventListener('click', async e=>{
   const go = e.target.closest('[data-go]'); if(go){ showStage(go.dataset.go); return; }
+  const on = e.target.closest('[data-pick-on]'); if(on){ setPick(on.dataset.pickOn, true); return; }
+  const off = e.target.closest('[data-pick-off]'); if(off){ setPick(off.dataset.pickOff, false); return; }
+  const add = e.target.closest('[data-add]');
+  if(add){
+    const key = add.dataset.add; S[key].push(row()); save(); renderList(key); refresh();
+    const ins = $$(`${LISTS[key].box} input`); ins[ins.length-1].focus(); return;
+  }
   const cp = e.target.closest('[data-copy]');
   if(cp){ const ok = await copyText(BUILDERS[cp.dataset.copy]()); toast(ok?'Copied to clipboard':'Copy failed — select the text and copy manually'); return; }
   const dl = e.target.closest('[data-download]');
   if(dl){ download(dl.dataset.filename, BUILDERS[dl.dataset.download]()); toast(`Downloaded ${dl.dataset.filename}`); }
 });
-$('#addUser').addEventListener('click',()=>{ S.users.push({name:'',desc:''}); save(); renderUsers(); refresh(); const ins=$$('#userList input'); ins[ins.length-1].focus(); });
 ['#exportBtn','#exportBtn2','#exportBtnM'].forEach(s=>$(s).addEventListener('click',exportProject));
 ['#importBtn','#importBtnM'].forEach(s=>$(s).addEventListener('click',importProject));
 ['#resetBtn','#resetBtnM'].forEach(s=>$(s).addEventListener('click',resetProject));
 $('#importFile').addEventListener('change', e=>{
+  e.stopPropagation();
   const f = e.target.files && e.target.files[0]; if(!f) return;
   const r = new FileReader();
   r.onload = ()=>{
     try{
-      S = merge(blank(), JSON.parse(r.result));
-      while(S.users.length<3) S.users.push({name:'',desc:''});
-      save(); fillInputs(); renderUsers(); refresh(); showStage(S.stage); toast('Checkpoint loaded');
+      S = merge(blank(), JSON.parse(r.result)); normalise();
+      save(); rerender(); toast('Checkpoint loaded');
     }catch(err){ toast('That file is not a valid checkpoint'); }
   };
   r.readAsText(f);
 });
 
 /* ================= INIT ================= */
-renderTabs(); fillInputs(); renderUsers(); refresh(); showStage(S.stage);
+renderTabs(); renderPickList(); rerender();
 })();
 </script>
 </body>
